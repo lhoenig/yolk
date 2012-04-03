@@ -240,27 +240,41 @@ class Yolk(object):
             #Check for every installed package
             pkg_list = get_pkglist()
         found = None
-        for pkg in pkg_list:
+        
+        from multiprocessing import Process, Manager
+        manager = Manager()
+        def worker_function(pkg, result_list, index):
             for (dist, active) in dists.get_distributions("all", pkg,
                     dists.get_highest_installed(pkg)):
                 (project_name, versions) = \
                         self.pypi.query_versions_pypi(dist.project_name)
-                if versions:
+            result_list[index] = (pkg, dist, project_name, versions)
+            
+        outputs = manager.list([None for _ in pkg_list])
+        workers = []
+        for index, pkg in enumerate(pkg_list):
+            p = Process(target = worker_function, args=(pkg, outputs, index))
+            p.start()
+            workers.append(p)
+        for process in workers:
+            process.join()
+        for (pkg, dist, project_name, versions) in outputs:
+            if versions:
 
-                    #PyPI returns them in chronological order,
-                    #but who knows if its guaranteed in the API?
-                    #Make sure we grab the highest version:
+                #PyPI returns them in chronological order,
+                #but who knows if its guaranteed in the API?
+                #Make sure we grab the highest version:
 
-                    newest = get_highest_version(versions)
-                    if newest != dist.version:
+                newest = get_highest_version(versions)
+                if newest != dist.version:
 
-                        #We may have newer than what PyPI knows about
+                    #We may have newer than what PyPI knows about
 
-                        if pkg_resources.parse_version(dist.version) < \
-                            pkg_resources.parse_version(newest):
-                            found = True
-                            print " %s %s (%s)" % (project_name, dist.version,
-                                    newest)
+                    if pkg_resources.parse_version(dist.version) < \
+                        pkg_resources.parse_version(newest):
+                        found = True
+                        print " %s %s (%s)" % (project_name, dist.version,
+                                newest)
         if not found and self.project_name:
             self.logger.info("You have the latest version installed.")
         elif not found:
