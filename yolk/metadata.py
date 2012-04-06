@@ -35,9 +35,12 @@ def get_metadata(dist):
     if not dist.has_metadata('PKG-INFO'):
         return
 
-    msg = email.message_from_string(dist.get_metadata('PKG-INFO'))
-    metadata = {}
-    for header in [l for l in msg._headers]:
-        metadata[header[0]] = header[1]
-
+    try:
+        metadata = {}
+        msg = email.message_from_string(dist.get_metadata('PKG-INFO'))
+        for header in [l for l in msg._headers]:
+            metadata[header[0]] = header[1]
+    except IOError as e:
+        # no egg-file, installed using other package manager
+        pass
     return metadata
