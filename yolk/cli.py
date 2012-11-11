@@ -62,7 +62,7 @@ class StdOut:
         self.modulenames = modulenames
 
     def __getattr__(self, attribute):
-        if not self.__dict__.has_key(attribute) or attribute == '__doc__':
+        if attribute not in self.__dict__ or attribute == '__doc__':
             return getattr(self.stdout, attribute)
         return self.__dict__[attribute]
 
@@ -613,7 +613,7 @@ class Yolk(object):
             self.logger.error(str(err_msg))
             return 1
 
-        if headers.gettype() in ["text/html"]:
+        if "text/html" in headers:
             dfile = open(downloaded_filename)
             if re.search("404 Not Found", "".join(dfile.readlines())):
                 dfile.close()
@@ -672,7 +672,7 @@ class Yolk(object):
             metadata = self.pypi.release_data(self.project_name, \
                     self.all_versions[0])
             self.logger.debug("DEBUG: browser: %s" % browser)
-            if metadata.has_key("home_page"):
+            if "home_page" in metadata:
                 self.logger.info("Launching browser: %s" \
                         % metadata["home_page"])
                 if browser == 'konqueror':
