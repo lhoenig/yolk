@@ -7,7 +7,7 @@ from yolk.__init__ import __version__ as VERSION
 
 
 
-setup(name="yolk",
+setup(name="yolk3k",
     license = "BSD License",
     version=VERSION,
     description="Command-line tool for querying PyPI and Python packages installed on your system.",
@@ -15,7 +15,7 @@ setup(name="yolk",
     maintainer="Rob Cakebread",
     author="Rob Cakebread",
     author_email="cakebread @ gmail",
-    url="https://github.com/cakebread/yolk",
+    url="https://github.com/myint/yolk",
     keywords="PyPI setuptools cheeseshop distutils eggs package management",
     classifiers=["Development Status :: 4 - Beta",
                  "Intended Audience :: Developers",
