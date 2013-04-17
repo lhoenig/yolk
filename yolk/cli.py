@@ -64,8 +64,12 @@ class StdOut:
         return self.__dict__[attribute]
 
     def flush(self):
-        """Bug workaround for Python 3.2+: Exception AttributeError: 'flush' in
-        <yolk.cli.StdOut object..."""
+        """Bug workaround for Python 3.2+: Exception AttributeError: 'flush'
+        in.
+
+        <yolk.cli.StdOut object...
+
+        """
 
     def write(self, inline):
         """Write a line to stdout if it isn't in a blacklist.
@@ -307,7 +311,6 @@ class Yolk(object):
                 for my_plugin in plugins:
                     # See if package is 'owned' by a package manager such as
                     # portage, apt, rpm etc.
-                    # add_column_text += my_plugin.add_column(filename) + " "
                     add_column_text += my_plugin.add_column(dist) + ' '
                 self.print_metadata(metadata, develop, active, add_column_text)
             else:

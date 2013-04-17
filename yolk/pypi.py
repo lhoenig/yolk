@@ -106,8 +106,6 @@ def check_proxy_setting():
 
     if not http_proxy.startswith('http://'):
         match = re.match('(http://)?([-_\.A-Za-z]+):(\d+)', http_proxy)
-        # if not match:
-        #    raise Exception('Proxy format not recognised: [%s]' % http_proxy)
         os.environ['HTTP_PROXY'] = 'http://%s:%s' % (match.group(2),
                                                      match.group(3))
     return
