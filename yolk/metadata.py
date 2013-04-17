@@ -23,8 +23,7 @@ import email
 
 
 def get_metadata(dist):
-    """
-    Return dictionary of metadata for given dist
+    """Return dictionary of metadata for given dist.
 
     @param dist: distribution
     @type dist: pkg_resources Distribution object

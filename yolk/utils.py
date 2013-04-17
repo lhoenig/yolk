@@ -19,19 +19,13 @@ import time
 from subprocess import Popen, STDOUT
 
 
-
 def get_yolk_dir():
-    """
-    Return location we store config files and data
-    """
-    return os.path.abspath("%s/.yolk" % os.path.expanduser("~"))
+    """Return location we store config files and data."""
+    return os.path.abspath('%s/.yolk' % os.path.expanduser('~'))
 
 
 def run_command(cmd, env=None, max_timeout=None):
-    """
-    Run command and return its return status code and its output
-
-    """
+    """Run command and return its return status code and its output."""
     arglist = cmd.split()
 
     output = os.tmpfile()
@@ -48,16 +42,14 @@ def run_command(cmd, env=None, max_timeout=None):
             if time.time() - start > max_timeout:
                 os.kill(pipe.pid, signal.SIGINT)
                 pipe.wait()
-                return 1, "Time exceeded"
+                return 1, 'Time exceeded'
 
     pipe.wait()
     output.seek(0)
     return pipe.returncode, output.read()
 
-def command_successful(cmd):
-    """
-    Returns True if command exited normally, False otherwise.
 
-    """
+def command_successful(cmd):
+    """Returns True if command exited normally, False otherwise."""
     return_code, _output = run_command(cmd)
     return return_code == 0

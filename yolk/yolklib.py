@@ -20,21 +20,19 @@ __docformat__ = 'restructuredtext'
 import pkg_resources
 
 
-
 class Distributions(object):
 
-    """Helper class for pkg_resources"""
+    """Helper class for pkg_resources."""
 
     def __init__(self):
-        """init"""
+        """init."""
 
         self.environment = pkg_resources.Environment()
         self.working_set = pkg_resources.WorkingSet()
 
     def query_activated(self, dist):
-        """
-        Return True if distribution is active
-        Return Falsee if distribution is non-active
+        """Return True if distribution is active Return Falsee if distribution
+        is non-active.
 
         @param dist: pkg_resources Distribution object
 
@@ -46,9 +44,8 @@ class Distributions(object):
         else:
             return False
 
-    def get_distributions(self, show, pkg_name="", version=""):
-        """
-        Yield installed packages
+    def get_distributions(self, show, pkg_name='', version=''):
+        """Yield installed packages.
 
         @param show: Type of package(s) to show; active, non-active or all
         @type show: string: "active", "non-active", "all"
@@ -63,22 +60,21 @@ class Distributions(object):
                   on active state. e.g. (dist, True)
 
         """
-        #pylint: disable-msg=W0612
+        # pylint: disable-msg=W0612
         #'name' is a placeholder for the sorted list
         for name, dist in self.get_alpha(show, pkg_name, version):
             ver = dist.version
             for package in self.environment[dist.project_name]:
                 if ver == package.version:
-                    if show == "nonactive" and dist not in self.working_set:
+                    if show == 'nonactive' and dist not in self.working_set:
                         yield (dist, self.query_activated(dist))
-                    elif show == "active" and dist in self.working_set:
+                    elif show == 'active' and dist in self.working_set:
                         yield (dist, self.query_activated(dist))
-                    elif show == "all":
+                    elif show == 'all':
                         yield (dist, self.query_activated(dist))
 
-    def get_alpha(self, show, pkg_name="", version=""):
-        """
-        Return list of alphabetized packages
+    def get_alpha(self, show, pkg_name='', version=''):
+        """Return list of alphabetized packages.
 
         @param pkg_name: PyPI project name
         @type pkg_name: string
@@ -94,10 +90,10 @@ class Distributions(object):
         alpha_list = []
         for dist in self.get_packages(show):
             if pkg_name and dist.project_name != pkg_name:
-                #Only checking for a single package name
+                # Only checking for a single package name
                 pass
             elif version and dist.version != version:
-                #Only checking for a single version of a package
+                # Only checking for a single version of a package
                 pass
             else:
                 alpha_list.append((dist.project_name + dist.version, dist))
@@ -105,20 +101,19 @@ class Distributions(object):
         return alpha_list
 
     def get_packages(self, show):
-        """
-        Return list of Distributions filtered by active status or all
+        """Return list of Distributions filtered by active status or all.
 
         @param show: Type of package(s) to show; active, non-active or all
         @type show: string: "active", "non-active", "all"
 
         @returns: list of pkg_resources Distribution objects
+
         """
 
-
-        if show == 'nonactive' or show == "all":
+        if show == 'nonactive' or show == 'all':
             all_packages = []
             for package in self.environment:
-                #There may be multiple versions of same packages
+                # There may be multiple versions of same packages
                 for i in range(len(self.environment[package])):
                     if self.environment[package][i]:
                         all_packages.append(self.environment[package][i])
@@ -128,8 +123,7 @@ class Distributions(object):
             return self.working_set
 
     def case_sensitive_name(self, package_name):
-        """
-        Return case-sensitive package name given any-case package name
+        """Return case-sensitive package name given any-case package name.
 
         @param project_name: PyPI project name
         @type project_name: string
@@ -139,8 +133,7 @@ class Distributions(object):
             return self.environment[package_name][0].project_name
 
     def get_highest_installed(self, project_name):
-        """
-        Return highest version of installed package
+        """Return highest version of installed package.
 
         @param project_name: PyPI project name
         @type project_name: string
@@ -152,15 +145,13 @@ class Distributions(object):
 
 
 def get_highest_version(versions):
-    """
-    Returns highest available version for a package in a list of versions
-    Uses pkg_resources to parse the versions
+    """Returns highest available version for a package in a list of versions
+    Uses pkg_resources to parse the versions.
 
     @param versions: List of PyPI package versions
     @type versions: List of strings
 
     @returns: string of a PyPI package version
-
 
     """
     sorted_versions = []
@@ -170,4 +161,3 @@ def get_highest_version(versions):
     sorted_versions = sorted(sorted_versions)
     sorted_versions.reverse()
     return sorted_versions[0][1]
-

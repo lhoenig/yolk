@@ -15,7 +15,7 @@ There are two basic rules for plugins:
 
 .. _setuptools: http://peak.telecommunity.com/DevCenter/setuptools
 .. _yolk.plugins.Plugin: http://tools.assembla.com/yolk
-   
+
 Registering
 ===========
 
@@ -51,7 +51,7 @@ of yolk's built-in arguments get their default value from an environment
 variable. This is a good practice because it allows options to be
 utilized when run through some other means than the yolktests script.
 
-A plugin's ``configure()`` method receives the parsed ``OptionParser`` options 
+A plugin's ``configure()`` method receives the parsed ``OptionParser`` options
 object, as well as the current config object. Plugins should configure their
 behavior based on the user-selected settings, and may raise exceptions
 if the configured behavior is nonsensical.
@@ -65,32 +65,35 @@ acquire a logger in the ``yolk.plugins`` namespace.
 
 """
 
-import logging
 import pkg_resources
 from warnings import warn
 from yolk.plugins.base import Plugin
 
-#LOG = logging.getLogger(__name__)
+# LOG = logging.getLogger(__name__)
+
 
 def call_plugins(plugins, method, *arg, **kw):
     """Call all method on plugins in list, that define it, with provided
-    arguments. The first response that is not None is returned.
+    arguments.
+
+    The first response that is not None is returned.
+
     """
     for plug in plugins:
         func = getattr(plug, method, None)
         if func is None:
             continue
-        #LOG.debug("call plugin %s: %s", plug.name, method)
+        # LOG.debug("call plugin %s: %s", plug.name, method)
         result = func(*arg, **kw)
         if result is not None:
             return result
     return None
-        
+
+
 def load_plugins(builtin=True, others=True):
-    """Load plugins, either builtin, others, or both.
-    """
+    """Load plugins, either builtin, others, or both."""
     for entry_point in pkg_resources.iter_entry_points('yolk.plugins'):
-        #LOG.debug("load plugin %s" % entry_point)
+        # LOG.debug("load plugin %s" % entry_point)
         try:
             plugin = entry_point.load()
         except KeyboardInterrupt:
@@ -99,12 +102,11 @@ def load_plugins(builtin=True, others=True):
             # never want a plugin load to exit yolk
             # but we can't log here because the logger is not yet
             # configured
-            warn("Unable to load plugin %s: %s" % \
-                    (entry_point, err_msg), RuntimeWarning)
+            warn('Unable to load plugin %s: %s' %
+                (entry_point, err_msg), RuntimeWarning)
             continue
         if plugin.__module__.startswith('yolk.plugins'):
             if builtin:
                 yield plugin
         elif others:
             yield plugin
-
