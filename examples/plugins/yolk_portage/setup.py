@@ -27,4 +27,3 @@ setup(name="yolk-portage",
     },
     test_suite = 'nose.collector',
 )
-

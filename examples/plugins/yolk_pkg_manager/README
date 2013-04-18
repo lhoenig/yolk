@@ -1,10 +1,10 @@
 yolk-acme example plugin
 ========================
 
-The purpose of this plugin is to show which packages were installed via an 
+The purpose of this plugin is to show which packages were installed via an
 external package manager or directly by distutils/setuptools.
 
-This plugin example shows how to use the `add_column` method 
+This plugin example shows how to use the `add_column` method
 to add this information to the output of -l, -a, or -n.
 
 To actually make this plugin work you will need to be able to determine if
@@ -84,4 +84,3 @@ Here is the code from Gentoo's yolk-portage plugin:
             return output.split()[0]
         else:
             return ""
-

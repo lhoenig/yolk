@@ -37,10 +37,10 @@ class PackageManagerPlugin:
             self.name = self.__class__.__name__.lower()
         if self.enable_opt is None:
             self.enable_opt = "enable_plugin_%s" % self.name
-            
+
     def add_options(self, parser):
         """Add plugin's options to yolk"""
-        parser.add_option('--%s' % self.name, action='store_true', 
+        parser.add_option('--%s' % self.name, action='store_true',
                 dest=self.enable_opt,
                 help="Show which packages are installed via the " +
                      " %s package manager. Use with -l" % self.name)
@@ -62,7 +62,7 @@ class PackageManagerPlugin:
         e.g.
         normal output:
         java-config     - 2.0.31       - active
-        
+
         Using plugin with add_column:
         java-config     - 2.0.31       - active YOUR EXTRA TEXT
         """
@@ -76,7 +76,7 @@ class PackageManagerPlugin:
         There is currently no way to determine if distutils or
         setuptools installed a package. A future feature of setuptools
         will make a package manifest which can be checked.
-           
+
         'filename' must be the full path to file
 
         """
@@ -94,5 +94,3 @@ class PackageManagerPlugin:
             return self.name
         else:
             return ""
-
-

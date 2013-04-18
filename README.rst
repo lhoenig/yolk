@@ -14,21 +14,21 @@ As of 0.0.7 yolk is in Gentoo's Portage tree as dev-python/yolk and a plugin for
 Summary
 -------
 
-Yolk is a Python tool for obtaining information about installed Python packages and querying packages avilable on PyPI (Python Package Index). 
+Yolk is a Python tool for obtaining information about installed Python packages and querying packages avilable on PyPI (Python Package Index).
 
-You can see which packages are active, non-active or in development mode and show you which have newer versions available by querying PyPI. 
+You can see which packages are active, non-active or in development mode and show you which have newer versions available by querying PyPI.
 
 Usage Examples::
 
     $ yolk -l
          List all installed Python packages
 
-    $ yolk -a 
-         List only the activated packages installed (Activated packages are normal packages on sys.path you can import) 
+    $ yolk -a
+         List only the activated packages installed (Activated packages are normal packages on sys.path you can import)
 
-    $ yolk -n 
-         List only the non-activated (--multi-version) packages installed 
-         
+    $ yolk -n
+         List only the non-activated (--multi-version) packages installed
+
     $ yolk -l -f License,Author nose==1.0
          Show the license and author for version 1.0 of the package `nose`
 
@@ -59,20 +59,20 @@ These options query PyPI::
     $ yolk -C 2
          Show detailed list of changes in the CheeseShop in the last two hours
 
-    $ yolk -M Paste==1.0 
-         Show all the metadata for Paste version 1.0 
+    $ yolk -M Paste==1.0
+         Show all the metadata for Paste version 1.0
 
-    $ yolk -M Paste 
+    $ yolk -M Paste
          Show all the metadata for the latest version of Paste listed on PyPi
 
-    $ yolk -D cheesecake 
+    $ yolk -D cheesecake
          Show all (source, egg, svn) URL's for the latest version of cheesecake packages
 
-     $ yolk -T source -D cheesecake 
-         Show only source code releases for cheesecake 
+     $ yolk -T source -D cheesecake
+         Show only source code releases for cheesecake
 
-     $ yolk -H twisted 
-         Launches your web browser at Twisted's home page 
+     $ yolk -H twisted
+         Launches your web browser at Twisted's home page
 
 
 Tips and Tricks
@@ -94,21 +94,21 @@ Changes
 **0.4.3**: Added missing documentation and license files
 
 
-           
+
 **0.4.2**: Fix for -C when an integer isn't supplied
-           
+
            Fix for --entry-map from Jesus Rivero (Neurogeek) neurogeek@gentoo.org. Thanks, Jesus!
-		
+
 		   Switch to BSD license from GPL-2
 
 
 **0.4.1**: Fix for -f fields
-           
+
            Add check for integer with -L
 
 
 **0.4.0**: Added http proxy support for XML-RPC
-            
+
            Added case-insensitive search for -f
 
            Non-existent packages with -S no longer show entire index (bug was with PyPI)
@@ -128,9 +128,9 @@ Changes
 
            Major refactoring.
 
-           Removed dependency on elementtree 
+           Removed dependency on elementtree
 
-           
+
 **0.2.0**: Added 'svn' type for -T
 
            A kablillion bug fixes
@@ -148,7 +148,7 @@ Changes
 
 
 **0.0.7**: New options: --entry-map and -entry-points
-           
+
            Improved results with --download-links
 
            New plugin system. First plugin available: yolk-portage
@@ -181,7 +181,7 @@ Changes
            Don't throw exception if there is no package metadata
 
 
-**0.0.4**: Added -U option to query PyPI for new versions of packages you have 
+**0.0.4**: Added -U option to query PyPI for new versions of packages you have
            installed
 
 Requirements
@@ -190,4 +190,3 @@ Requirements
 * setuptools (Distribute preferred)
 
 * elementtree (For RSS feed option extra_requires [RSS]) (included in Python >=2.5)
-

@@ -7,4 +7,3 @@ systems using Portage.
 
 --portage used with -l, -a or -n will show you if the packages
 were installed by Portage or directly by easy_install/distutils/setuptools.
-

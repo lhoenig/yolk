@@ -16,7 +16,7 @@ import sys
 
 
 if sys.version_info[0] == 2 and sys.version_info[1] == 5:
-    #Python >=2.5 has elementtree 
+    #Python >=2.5 has elementtree
     from xml.etree.cElementTree import iterparse
 else:
     try:
