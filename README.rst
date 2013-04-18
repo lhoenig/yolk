@@ -78,11 +78,11 @@ These options query PyPI::
 Tips and Tricks
 ---------------
 
- * Use yolk inside your virtualenv to see which packages are installed.
+* Use yolk inside your virtualenv to see which packages are installed.
 
- * Upgrade all installed Python packages::
+* Upgrade all installed Python packages::
 
-     $ pip install -U `yolk -U | awk '{print $1}'`
+    $ pip install -U `yolk -U | awk '{print $1}'`
 
 
 
