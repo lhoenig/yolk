@@ -10,3 +10,5 @@ install:
 
 script:
     - yolk --latest-releases=1
+    - yolk --show-updates
+    - yolk --query-metadata=yolk
