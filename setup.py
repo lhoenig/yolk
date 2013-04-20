@@ -33,4 +33,5 @@ with open('README.rst') as readme:
         packages=['yolk', 'yolk.plugins'],
         package_dir={'yolk': 'yolk'},
         entry_points={'console_scripts': ['yolk = yolk.cli:main']},
+        test_suite='tests.test_yolk_cli'
     )

@@ -9,6 +9,7 @@ install:
     - python setup.py --quiet install
 
 script:
+    - ./setup.py test
     - yolk --latest-releases=1
     - yolk --show-updates
     - yolk --query-metadata=yolk
