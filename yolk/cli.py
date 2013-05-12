@@ -192,7 +192,7 @@ class Yolk(object):
             (self.project_name, self.version, self.all_versions) = \
                 self.parse_pkg_ver(want_installed)
             if want_installed and not self.project_name:
-                logger.error('%s is not installed.' % pkg_spec[0])
+                logger.error('%s is not installed.' % pkg_spec)
                 return 1
 
         # I could prefix all these with 'cmd_' and the methods also
