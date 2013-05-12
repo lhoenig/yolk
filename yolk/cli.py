@@ -17,8 +17,7 @@ License : BSD (See COPYING)
 
 """
 
-__docformat__ = 'restructuredtext'
-
+from __future__ import print_function
 
 import inspect
 import re
@@ -46,6 +45,9 @@ from yolk.setuptools_support import get_download_uri, get_pkglist
 from yolk.plugins import load_plugins
 from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
+
+
+__docformat__ = 'restructuredtext'
 
 
 class StdOut:
@@ -352,8 +354,7 @@ class Yolk(object):
         """
         show_metadata = self.options.metadata
         if self.options.fields:
-            fields = self.options.fields.split(',')
-            fields = map(str.strip, fields)
+            fields = [s.strip() for s in self.options.fields.split(',')]
         else:
             fields = []
         version = metadata['Version']
@@ -386,7 +387,7 @@ class Yolk(object):
                   ' - ' + status)
         if fields:
             # Only show specific fields, using case-insensitive search
-            fields = map(str.lower, fields)
+            fields = [s.lower() for s in fields]
             for field in metadata.keys():
                 if field.lower() in fields:
                     print('    %s: %s' % (field, metadata[field]))
