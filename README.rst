@@ -14,7 +14,7 @@ As of 0.0.7 yolk is in Gentoo's Portage tree as dev-python/yolk and a plugin for
 Summary
 -------
 
-Yolk is a Python tool for obtaining information about installed Python packages and querying packages avilable on PyPI (Python Package Index).
+Yolk is a Python tool for obtaining information about installed Python packages and querying packages available on PyPI (Python Package Index).
 
 You can see which packages are active, non-active or in development mode and show you which have newer versions available by querying PyPI.
 

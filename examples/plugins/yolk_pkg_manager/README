@@ -19,7 +19,7 @@ here:
     class PackageManagerPlugin:
         name = "pkg-manager-name"
 
-By doing that you have a new --pkg-manager-name option availabe to yolk.
+By doing that you have a new --pkg-manager-name option available to yolk.
 
 Next, you'll need to return a string you want added to
 the output if your package manager installed the package

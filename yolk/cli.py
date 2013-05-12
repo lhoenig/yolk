@@ -401,7 +401,7 @@ class Yolk(object):
     def show_deps(self):
         """Show dependencies for package(s)
 
-        @returns: 0 - sucess  1 - No dependency info supplied
+        @returns: 0 - success  1 - No dependency info supplied
 
         """
 
@@ -431,7 +431,7 @@ class Yolk(object):
     def show_pypi_changelog(self):
         """Show detailed PyPI ChangeLog for the last `hours`
 
-        @returns: 0 = sucess or 1 if failed to retrieve from XML-RPC server
+        @returns: 0 = success or 1 if failed to retrieve from XML-RPC server
 
         """
         hours = self.options.show_pypi_changelog

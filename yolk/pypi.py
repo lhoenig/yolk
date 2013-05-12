@@ -203,7 +203,7 @@ class CheeseShop(object):
         try:
             return self.xmlrpc.release_data(package_name, version)
         except xmlrpclib.Fault:
-            # XXX Raises xmlrpclib.Fault if you give non-existant version
+            # XXX Raises xmlrpclib.Fault if you give non-existent version
             # Could this be server bug?
             return
 
