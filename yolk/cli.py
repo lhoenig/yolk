@@ -549,7 +549,6 @@ class Yolk(object):
         directory = '.'
 
         if self.options.file_type == 'svn':
-            version = 'dev'
             svn_uri = get_download_uri(self.project_name,
                                        'dev', True)
             if svn_uri:
@@ -695,12 +694,6 @@ class Yolk(object):
         @returns: 0 if version(s) found or 1 if none found
 
         """
-
-        if self.version:
-            spec = '%s==%s' % (self.project_name, self.version)
-        else:
-            spec = self.project_name
-
         if self.all_versions and self.version in self.all_versions:
             print_pkg_versions(self.project_name, [self.version])
         elif not self.version and self.all_versions:
@@ -1034,7 +1027,6 @@ def setup_opt_parser():
     opt_parser.add_option_group(group_local)
     opt_parser.add_option_group(group_pypi)
     # add opts from plugins
-    all_plugins = []
     for plugcls in load_plugins(others=True):
         plug = plugcls()
         try:
