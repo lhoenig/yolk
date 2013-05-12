@@ -145,7 +145,8 @@ class Distributions(object):
 
 
 def get_highest_version(versions):
-    """Returns highest available version for a package in a list of versions
+    """Returns highest available version for a package in a list of versions.
+
     Uses pkg_resources to parse the versions.
 
     @param versions: List of PyPI package versions

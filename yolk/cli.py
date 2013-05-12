@@ -418,7 +418,8 @@ class Yolk(object):
                         if self.version and i == len(list(
                                 pkg._dep_map.values())[0]):
                             print(pkg.project_name, pkg.version)
-                        print('  ' + str(list(pkg._dep_map.values())[0][i - 1]))
+                        print('  ' + str(list(
+                            pkg._dep_map.values())[0][i - 1]))
                     i -= 1
             else:
                 self.logger.info(

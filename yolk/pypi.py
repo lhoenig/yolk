@@ -145,8 +145,7 @@ class CheeseShop(object):
         return os.path.abspath('%s/pkg_list.pkl' % self.yolk_dir)
 
     def query_versions_pypi(self, package_name):
-        """Fetch list of available versions for a package from The
-        CheeseShop."""
+        """Fetch list of available versions for a package from PyPI."""
         if not package_name in self.pkg_list:
             self.logger.debug('Package %s not in cache, querying PyPI...'
                               % package_name)
@@ -243,7 +242,7 @@ class CheeseShop(object):
             # returned by XML-RPC's release_urls()
             if metadata and 'download_url' in metadata and \
                 metadata['download_url'] != 'UNKNOWN' and \
-                    metadata['download_url'] != None:
+                    metadata['download_url'] is not None:
                 if metadata['download_url'] not in all_urls:
                     if pkg_type != 'all':
                         url = filter_url(pkg_type, metadata['download_url'])
