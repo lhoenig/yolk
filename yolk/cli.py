@@ -1078,6 +1078,3 @@ def main():
     """Let's do it."""
     my_yolk = Yolk()
     my_yolk.run()
-
-if __name__ == '__main__':
-    sys.exit(main())
