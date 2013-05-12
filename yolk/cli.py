@@ -278,8 +278,6 @@ class Yolk(object):
         @returns: None or 2 if error
 
         """
-        show_metadata = self.options.metadata
-
         # Search for any plugins with active CLI options with add_column()
         # method
         plugins = self.get_plugin('add_column')

@@ -107,4 +107,3 @@ class PackageManagerPlugin:
         """
 
         #XXX Use gentoolkit?
-        pass
