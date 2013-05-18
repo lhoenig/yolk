@@ -846,7 +846,7 @@ class Yolk(object):
                 print('   %s' % entry_point)
                 if plugin.__doc__:
                     print(plugin.__doc__)
-                print
+                print()
             except ImportError:
                 pass
         if not found:
