@@ -1,14 +1,10 @@
-
-
-"""
-
-utils.py
-===========
+"""utils
 
 Misc funcitions
 ---------------
 
 run_command borrowed from Cheesecake - See CREDITS.
+
 """
 
 __docformat__ = 'restructuredtext'

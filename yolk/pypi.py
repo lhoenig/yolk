@@ -1,8 +1,4 @@
-
-"""
-
-pypi.py
-=======
+"""pypi
 
 Desc: Library for getting information about Python packages by querying
       The CheeseShop (PYPI a.k.a. Python Package Index).
@@ -72,9 +68,13 @@ class ProxyTransport(xmlrpclib.Transport):
 
 def check_proxy_setting():
     """If the environmental variable 'HTTP_PROXY' is set, it will most likely
-    be in one of these forms: proxyhost:8080 http://proxyhost:8080 urlllib2
+    be in one of these forms:
+
+    proxyhost:8080 http://proxyhost:8080 urlllib2
     requires the proxy URL to start with 'http://' This routine does that, and
-    returns the transport for xmlrpc."""
+    returns the transport for xmlrpc.
+
+    """
     try:
         http_proxy = os.environ['HTTP_PROXY']
     except KeyError:

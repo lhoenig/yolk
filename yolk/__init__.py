@@ -1,7 +1,4 @@
-
-"""
-
-__init__.py
+"""yolk
 
 Author: Rob Cakebread <cakebread at gmail>
 

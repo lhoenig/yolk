@@ -1,8 +1,4 @@
-
-'''
-
-yolklib.py
-==========
+"""yolklib
 
 Desc: Library for getting information about Python packages installed by
       setuptools, package metadata, package dependencies, and querying
@@ -13,7 +9,7 @@ Author: Rob Cakebread <cakebread @ gmail>
 
 License  : BSD (See COPYING)
 
-'''
+"""
 
 __docformat__ = 'restructuredtext'
 

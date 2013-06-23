@@ -1,7 +1,8 @@
 
 # pylint: disable-msg=W0142,C0103
 
-"""Writing Plugins
+"""Writing Plugins.
+
 ---------------
 
 yolk supports setuptools_ entry point plugins.

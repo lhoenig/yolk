@@ -1,10 +1,8 @@
-
 # pylint: disable-msg=W0201,W0511
 # XXX Attribute 'conf' defined outside __init__
 
-"""
+"""Base plugin class.
 
-Base plugin class
 This is not needed yet, see working plugins in examples directory.
 
 """

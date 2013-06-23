@@ -1,10 +1,7 @@
 # pylint: disable-msg=W0613,W0612,W0212,W0511,R0912,C0322,W0704
 # W0511 = XXX (my own todo's)
 
-"""
-
-cli.py
-======
+"""cli
 
 Desc: Command-line tool for listing Python packages installed by setuptools,
       package metadata, package dependencies, and querying The Cheese Shop
