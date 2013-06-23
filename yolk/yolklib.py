@@ -11,8 +11,6 @@ License  : BSD (See COPYING)
 
 """
 
-__docformat__ = 'restructuredtext'
-
 import pkg_resources
 
 

@@ -10,8 +10,6 @@ License  : BSD (See COPYING)
 
 """
 
-__docformat__ = 'restructuredtext'
-
 import re
 import platform
 if platform.python_version().startswith('2'):

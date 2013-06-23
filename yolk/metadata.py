@@ -14,8 +14,6 @@ Desc     : Return metadata for Python distribution installed by setuptools
 
 """
 
-__docformat__ = 'restructuredtext'
-
 import email
 
 

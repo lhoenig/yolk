@@ -44,9 +44,6 @@ from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
 
 
-__docformat__ = 'restructuredtext'
-
-
 class StdOut:
 
     """Filter stdout or stderr from specific modules So far this is just used

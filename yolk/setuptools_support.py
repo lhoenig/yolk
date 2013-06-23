@@ -15,9 +15,6 @@ from setuptools.package_index import PackageIndex
 import pkg_resources
 
 
-__docformat__ = 'restructuredtext'
-
-
 class DownloadURI(Exception):
 
     """Hack to raise the value of the URI from PackageIndex."""

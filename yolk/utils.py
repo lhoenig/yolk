@@ -7,8 +7,6 @@ run_command borrowed from Cheesecake - See CREDITS.
 
 """
 
-__docformat__ = 'restructuredtext'
-
 import os
 import signal
 import time
