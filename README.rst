@@ -1,6 +1,10 @@
 yolk
 ====
 
+.. image:: https://travis-ci.org/myint/yolk.png?branch=master
+   :target: https://travis-ci.org/myint/yolk
+   :alt: Build status
+
 .. contents::
 
 Installation
