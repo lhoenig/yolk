@@ -133,7 +133,8 @@ class CheeseShop(object):
         else:
             debug = 0
         try:
-            return xmlrpclib.Server(XML_RPC_SERVER, transport=ProxyTransport(), verbose=debug)
+            return xmlrpclib.Server(XML_RPC_SERVER, transport=ProxyTransport(),
+                                    verbose=debug)
         except IOError:
             self.logger("ERROR: Can't connect to XML-RPC server: %s"
                         % XML_RPC_SERVER)
