@@ -57,7 +57,7 @@ def get_download_uri(package_name, version, source, index_url=None):
     force_scan = True
     develop_ok = False
     if not index_url:
-        index_url = 'http://cheeseshop.python.org/pypi'
+        index_url = 'https://pypi.python.org/pypi'
 
     if version:
         pkg_spec = '%s==%s' % (package_name, version)

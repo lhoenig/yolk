@@ -33,7 +33,7 @@ import logging
 from yolk.utils import get_yolk_dir
 
 
-XML_RPC_SERVER = 'http://pypi.python.org/pypi'
+XML_RPC_SERVER = 'https://pypi.python.org/pypi'
 
 
 class ProxyTransport(xmlrpclib.Transport):
@@ -115,9 +115,9 @@ class CheeseShop(object):
 
         if not os.path.exists(self.yolk_dir):
             os.mkdir(self.yolk_dir)
-        if os.path.exists(self.pkg_cache_file):
+        try:
             self.pkg_list = self.query_cached_package_list()
-        else:
+        except (IOError, ValueError):
             self.logger.debug(
                 'DEBUG: Fetching package list cache from PyPi...')
             self.fetch_pkg_list()
