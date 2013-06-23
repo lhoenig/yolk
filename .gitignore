@@ -2,3 +2,5 @@
 dist/
 build/
 yolk.egg-info/
+.travis-solo/
+yolk3k.egg-info/
