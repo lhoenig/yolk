@@ -229,7 +229,7 @@ class Yolk(object):
         """Check installed packages for available updates on PyPI.
 
         @param project_name: optional package name to check; checks every
-                             installed pacakge if none specified
+                             installed package if none specified
         @type project_name: string
 
         @returns: None
@@ -706,11 +706,11 @@ class Yolk(object):
             print_pkg_versions(self.project_name, self.all_versions)
         else:
             if self.version:
-                self.logger.error('No pacakge found for version %s'
+                self.logger.error('No package found for version %s'
                                   % self.version)
             else:
                 self.logger.error(
-                    'No pacakge found for %s' % self.project_name)
+                    'No package found for %s' % self.project_name)
             return 1
         return 0
 
@@ -819,7 +819,7 @@ class Yolk(object):
         """Show entry map for a package.
 
         @param dist: package
-        @param type: srting
+        @param type: string
 
         @returns: 0 for success or 1 if error
 
