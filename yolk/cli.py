@@ -797,7 +797,7 @@ class Yolk(object):
 
         """
         spec = self.pkg_spec
-        # Add remainging cli arguments to options.pypi_search
+        # Add remaining cli arguments to options.pypi_search.
         search_arg = self.options.pypi_search
         spec.insert(0, search_arg.strip())
 
