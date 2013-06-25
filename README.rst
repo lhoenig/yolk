@@ -107,4 +107,4 @@ Requirements
 * setuptools (Distribute preferred)
 
 * elementtree (For RSS feed option extra_requires [RSS])
-  (included in Python >=2.5)
+  (included in Python >= 2.5)
