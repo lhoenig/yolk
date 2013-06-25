@@ -1,7 +1,4 @@
-"""utils
-
-Misc funcitions
----------------
+"""Miscellaneous functions
 
 run_command borrowed from Cheesecake - See CREDITS.
 
