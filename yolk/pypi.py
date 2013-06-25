@@ -10,15 +10,16 @@ License  : BSD (See COPYING)
 
 """
 
+from __future__ import print_function
+
+import ast
 import re
 import platform
 if platform.python_version().startswith('2'):
     import xmlrpclib
-    import cPickle as pickle
     import urllib2
 else:
     import xmlrpc.client as xmlrpclib
-    import pickle
     import urllib.request as urllib2
 import os
 import time
@@ -163,16 +164,19 @@ class CheeseShop(object):
         return (package_name, versions)
 
     def query_cached_package_list(self):
-        """Return list of pickled package names from PYPI."""
+        """Return list of cached package names from PYPI."""
         if self.debug:
-            self.logger.debug('DEBUG: reading pickled cache file')
-        return pickle.load(open(self.pkg_cache_file, 'rb'))
+            self.logger.debug('DEBUG: reading cache file')
+        with open(self.pkg_cache_file, 'r') as input_file:
+            return ast.literal_eval(input_file.read())
 
     def fetch_pkg_list(self):
         """Fetch and cache master list of package names from PYPI."""
         self.logger.debug('DEBUG: Fetching package name list from PyPI')
         package_list = self.list_packages()
-        pickle.dump(package_list, open(self.pkg_cache_file, 'wb'))
+        print('write cache')
+        with open(self.pkg_cache_file, 'w') as output_file:
+            print(package_list, file=output_file)
         self.pkg_list = package_list
 
     def search(self, spec, operator):
