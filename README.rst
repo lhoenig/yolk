@@ -10,17 +10,24 @@ yolk
 Installation
 ------------
 
-You can install yolk with ``pip install yolk`` or via your distro's package manager, if available.
+You can install yolk with ``pip install yolk`` or via your distro's package
+manager, if available.
 
-As of 0.0.7 yolk is in Gentoo's Portage tree as dev-python/yolk and a plugin for Portage named dev-python/yolk-portage. The portage plugin shows you which Python packages were installed via Portage and which were installed directly with pip (or easy_install). Check out that plugin and make one for your favorite distro. It's a great way to find Python cruft.
+As of 0.0.7 yolk is in Gentoo's Portage tree as dev-python/yolk and a plugin
+for Portage named dev-python/yolk-portage. The portage plugin shows you which
+Python packages were installed via Portage and which were installed directly
+with pip (or easy_install). Check out that plugin and make one for your
+favorite distro. It's a great way to find Python cruft.
 
 
 Summary
 -------
 
-Yolk is a Python tool for obtaining information about installed Python packages and querying packages available on PyPI (Python Package Index).
+Yolk is a Python tool for obtaining information about installed Python packages
+and querying packages available on PyPI (Python Package Index).
 
-You can see which packages are active, non-active or in development mode and show you which have newer versions available by querying PyPI.
+You can see which packages are active, non-active or in development mode and
+show you which have newer versions available by querying PyPI.
 
 Usage Examples::
 
@@ -28,7 +35,8 @@ Usage Examples::
          List all installed Python packages
 
     $ yolk -a
-         List only the activated packages installed (Activated packages are normal packages on sys.path you can import)
+         List only the activated packages installed (Activated packages are
+         normal packages on sys.path you can import)
 
     $ yolk -n
          List only the non-activated (--multi-version) packages installed
@@ -49,13 +57,16 @@ These options query PyPI::
          Shows if an update for pkg_name is available by querying PyPI
 
     $ yolk -U
-         Checks PyPI to see if any installed Python packages have updates available.
+         Checks PyPI to see if any installed Python packages have updates
+         available.
 
     $ yolk -F Paste
-         Download source tarball for latest version of Paste to your current directory
+         Download source tarball for latest version of Paste to your current
+         directory
 
     $ yolk -F Paste -T svn
-         Do a subversion checkout for Paste to a directory named Paste_svn in your current directory.
+         Do a subversion checkout for Paste to a directory named Paste_svn in
+         your current directory.
 
     $ yolk -L 2
          Show list of CheeseShop releases in the last two hours
@@ -70,7 +81,8 @@ These options query PyPI::
          Show all the metadata for the latest version of Paste listed on PyPi
 
     $ yolk -D cheesecake
-         Show all (source, egg, svn) URL's for the latest version of cheesecake packages
+         Show all (source, egg, svn) URL's for the latest version of cheesecake
+         packages
 
      $ yolk -T source -D cheesecake
          Show only source code releases for cheesecake
@@ -94,4 +106,5 @@ Requirements
 
 * setuptools (Distribute preferred)
 
-* elementtree (For RSS feed option extra_requires [RSS]) (included in Python >=2.5)
+* elementtree (For RSS feed option extra_requires [RSS])
+  (included in Python >=2.5)
