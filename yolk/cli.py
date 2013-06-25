@@ -307,7 +307,7 @@ class Yolk(object):
             for prefix in ignores:
                 if dist.location.startswith(prefix):
                     dist.location = dist.location.replace(prefix, '')
-            # Case-insensitve search because of Windows
+            # Case-insensitive search because of Windows.
             if dist.location.lower().startswith(get_python_lib().lower()):
                 develop = ''
             else:

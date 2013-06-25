@@ -25,8 +25,7 @@ class Distributions(object):
         self.working_set = pkg_resources.WorkingSet()
 
     def query_activated(self, dist):
-        """Return True if distribution is active Return Falsee if distribution
-        is non-active.
+        """Return True if distribution is active.
 
         @param dist: pkg_resources Distribution object
 
