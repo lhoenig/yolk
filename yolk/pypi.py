@@ -225,14 +225,11 @@ class CheeseShop(object):
         return self.xmlrpc.package_releases(package_name)
 
     def get_download_urls(self, package_name, version='', pkg_type='all'):
-        """Query PyPI for pkg download URI for a packge."""
-
+        """Query PyPI for pkg download URI for a package"""
         if version:
             versions = [version]
         else:
-
             # If they don't specify version, show em all.
-
             (package_name, versions) = self.query_versions_pypi(package_name)
 
         all_urls = []

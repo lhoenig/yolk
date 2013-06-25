@@ -15,4 +15,5 @@ class TestYolkLib (unittest.TestCase):
             '0.3',
             '3.1.1',
             '1.2.4']
+
         self.assertEqual('3.1.2', yolk.yolklib.get_highest_version(versions))
