@@ -30,6 +30,8 @@ from yolk.utils import get_yolk_dir
 
 XML_RPC_SERVER = 'https://pypi.python.org/pypi'
 
+MAX_CACHE_AGE = 60
+
 
 class ProxyTransport(xmlrpclib.Transport):
 
@@ -173,8 +175,13 @@ class CheeseShop(object):
     def fetch_pkg_list(self):
         """Fetch and cache master list of package names from PYPI."""
         self.logger.debug('DEBUG: Fetching package name list from PyPI')
+        if (
+            os.path.exists(self.pkg_cache_file) and
+            time.time() - os.stat(self.pkg_cache_file).st_mtime < MAX_CACHE_AGE
+        ):
+            return
+
         package_list = self.list_packages()
-        print('write cache')
         with open(self.pkg_cache_file, 'w') as output_file:
             print(package_list, file=output_file)
         self.pkg_list = package_list
