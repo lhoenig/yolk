@@ -86,7 +86,7 @@ Tips and Tricks
 
 * Upgrade all installed Python packages::
 
-    $ pip install -U `yolk -U | awk '{print $1}'`
+    $ pip install -U `yolk -U | awk '{print $1}' | uniq`
 
 
 Requirements
