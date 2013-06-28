@@ -121,7 +121,7 @@ class CheeseShop(object):
         except (IOError, ValueError):
             self.logger.debug(
                 'DEBUG: Fetching package list cache from PyPi...')
-            self.fetch_pkg_list()
+            self.fetch_pkg_list(True)
 
     def get_last_sync_file(self):
         """Get the last time in seconds since The Epoc since the last pkg list
@@ -172,10 +172,11 @@ class CheeseShop(object):
         with open(self.pkg_cache_file, 'r') as input_file:
             return ast.literal_eval(input_file.read())
 
-    def fetch_pkg_list(self):
+    def fetch_pkg_list(self, ignore_cache=False):
         """Fetch and cache master list of package names from PYPI."""
         self.logger.debug('DEBUG: Fetching package name list from PyPI')
         if (
+            not ignore_cache and
             os.path.exists(self.pkg_cache_file) and
             time.time() - os.stat(self.pkg_cache_file).st_mtime < MAX_CACHE_AGE
         ):
