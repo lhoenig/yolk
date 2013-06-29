@@ -29,7 +29,6 @@ with open('README.rst') as readme:
             'Programming Language :: Python :: 3',
             'Topic :: Software Development :: Libraries :: Python Modules',
         ],
-        install_requires=['setuptools'],
         packages=['yolk', 'yolk.plugins'],
         package_dir={'yolk': 'yolk'},
         entry_points={'console_scripts': ['yolk = yolk.cli:main']},
