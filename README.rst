@@ -12,7 +12,7 @@ Installation
 
 ::
 
-    $ pip install yolk3k
+    $ pip install --upgrade yolk3k
 
 
 Summary
