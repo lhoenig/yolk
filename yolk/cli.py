@@ -1,7 +1,7 @@
 # pylint: disable-msg=W0613,W0612,W0212,W0511,R0912,C0322,W0704
 # W0511 = XXX (my own todo's)
 
-"""cli
+"""cli.
 
 Desc: Command-line tool for listing Python packages installed by setuptools,
       package metadata, package dependencies, and querying The Cheese Shop
@@ -70,9 +70,9 @@ class StdOut:
     def write(self, inline):
         """Write a line to stdout if it isn't in a blacklist.
 
-        Try to get the name of the calling module to see if we want
-        to filter it. If there is no calling module, use current
-        frame in case there's a traceback before there is any calling module
+        Try to get the name of the calling module to see if we want to
+        filter it. If there is no calling module, use current frame in
+        case there's a traceback before there is any calling module
 
         """
         frame = inspect.currentframe().f_back

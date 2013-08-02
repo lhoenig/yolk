@@ -1,4 +1,4 @@
-"""yolklib
+"""yolklib.
 
 Desc: Library for getting information about Python packages installed by
       setuptools, package metadata, package dependencies, and querying

@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-
-yolk_acme
+"""yolk_acme.
 
 This is a plugin for acme, the package manager for Acme Linux.
 It provides information for packages installed by Acme.
 
 --acme used with -l, -a or -n will show you if the packages
 were installed by Acme.
-
 
 """
 
@@ -48,8 +45,8 @@ class PackageManagerPlugin:
     def configure(self, options, conf):
         """Configure the plugin and system, based on selected options.
 
-        The base plugin class sets the plugin to enabled if the enable option
-        for the plugin (self.enableOpt) is true.
+        The base plugin class sets the plugin to enabled if the enable
+        option for the plugin (self.enableOpt) is true.
 
         """
         self.conf = conf

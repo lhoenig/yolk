@@ -1,4 +1,4 @@
-"""Miscellaneous functions
+"""Miscellaneous functions.
 
 run_command borrowed from Cheesecake - See CREDITS.
 

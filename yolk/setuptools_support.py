@@ -2,7 +2,7 @@
 # pylint: disable-msg=W0231,R0904
 
 
-"""setuptools_support
+"""setuptools_support.
 
 License  : BSD (See COPYING)
 

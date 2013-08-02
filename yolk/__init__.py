@@ -1,4 +1,4 @@
-"""yolk
+"""yolk.
 
 Author: Rob Cakebread <cakebread at gmail>
 

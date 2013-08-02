@@ -1,4 +1,4 @@
-"""pypi
+"""pypi.
 
 Desc: Library for getting information about Python packages by querying
       The CheeseShop (PYPI a.k.a. Python Package Index).
@@ -226,7 +226,7 @@ class CheeseShop(object):
         return self.xmlrpc.package_releases(package_name)
 
     def get_download_urls(self, package_name, version='', pkg_type='all'):
-        """Query PyPI for pkg download URI for a package"""
+        """Query PyPI for pkg download URI for a package."""
         if version:
             versions = [version]
         else:

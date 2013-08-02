@@ -3,8 +3,6 @@
 
 """Writing Plugins.
 
----------------
-
 yolk supports setuptools_ entry point plugins.
 
 There are two basic rules for plugins:
