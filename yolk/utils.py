@@ -5,9 +5,10 @@ run_command borrowed from Cheesecake - See CREDITS.
 """
 
 import os
+import shlex
 import signal
+import subprocess
 import time
-from subprocess import Popen, STDOUT
 
 
 def get_yolk_dir():
@@ -28,11 +29,11 @@ def run_command(cmd, env=None, max_timeout=None):
     (0, 'hello world\n')
 
     """
-    arglist = cmd.split()
-
-    output = os.tmpfile()
     try:
-        pipe = Popen(arglist, stdout=output, stderr=STDOUT, env=env)
+        pipe = subprocess.Popen(shlex.split(cmd),
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                env=env)
     except Exception as errmsg:
         return 1, errmsg
 
@@ -47,8 +48,7 @@ def run_command(cmd, env=None, max_timeout=None):
                 return 1, 'Time exceeded'
 
     pipe.wait()
-    output.seek(0)
-    return pipe.returncode, output.read()
+    return pipe.returncode, pipe.communicate()[0].decode('utf-8')
 
 
 def command_successful(cmd):
