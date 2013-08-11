@@ -44,7 +44,7 @@ from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
 
 
-class StdOut:
+class StdOut(object):
 
     """Filter stdout or stderr from specific modules So far this is just used
     for pkg_resources."""
