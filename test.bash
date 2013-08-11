@@ -9,3 +9,5 @@ python -m yolk --depends=pip
 # printing the error message if I pipe it.
 #python -m yolk --depends=foo 2>&1 | grep 'foo is not installed'
 python -m yolk --depends=foo
+
+python -m doctest yolk/*.py

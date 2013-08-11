@@ -16,7 +16,18 @@ def get_yolk_dir():
 
 
 def run_command(cmd, env=None, max_timeout=None):
-    """Run command and return its return status code and its output."""
+    r"""Run command and return its return status code and its output.
+
+    >>> run_command('true')
+    (0, '')
+
+    >>> run_command('false')
+    (1, '')
+
+    >>> run_command('echo hello world')
+    (0, 'hello world\n')
+
+    """
     arglist = cmd.split()
 
     output = os.tmpfile()
