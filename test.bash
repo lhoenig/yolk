@@ -10,4 +10,7 @@ python -m yolk --depends=pip
 #python -m yolk --depends=foo 2>&1 | grep 'foo is not installed'
 python -m yolk --depends=foo
 
-python -m doctest yolk/utils.py
+if [ "$TRAVIS_PYTHON_VERSION" != "2.7" ]
+then
+    python -m doctest yolk/utils.py
+fi
