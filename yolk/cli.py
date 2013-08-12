@@ -168,8 +168,9 @@ class Yolk(object):
             # XXX: We should return 2 here if we couldn't create xmlrpc server
 
         if pkg_spec:
-            (self.project_name, self.version, self.all_versions) = \
-                self.parse_pkg_ver(want_installed)
+            (self.project_name,
+             self.version,
+             self.all_versions) = self.parse_pkg_ver(want_installed)
             if want_installed and not self.project_name:
                 print('{} is not installed'.format(pkg_spec),
                       file=sys.stderr)
@@ -226,10 +227,11 @@ class Yolk(object):
         from multiprocessing.pool import ThreadPool
 
         def worker_function(pkg):
-            for (dist, active) in dists.get_distributions('all', pkg,
-                                                          dists.get_highest_installed(pkg)):
-                (project_name, versions) = \
-                    self.pypi.query_versions_pypi(dist.project_name)
+            for (dist, active) in dists.get_distributions(
+                    'all', pkg,
+                    dists.get_highest_installed(pkg)):
+                (project_name, versions) = self.pypi.query_versions_pypi(
+                    dist.project_name)
             return (pkg, dist, project_name, versions)
 
         import multiprocessing
@@ -245,10 +247,13 @@ class Yolk(object):
                 newest = get_highest_version(versions)
                 if newest != dist.version:
                     # We may have newer than what PyPI knows about.
-                    if pkg_resources.parse_version(dist.version) < \
-                            pkg_resources.parse_version(newest):
-                        print(' %s %s (%s)' %
-                              (project_name, dist.version, newest))
+                    if (
+                        pkg_resources.parse_version(dist.version) <
+                        pkg_resources.parse_version(newest)
+                    ):
+                        print(' {} {} ({})'.format(project_name,
+                                                   dist.version,
+                                                   newest))
 
         return 0
 
@@ -354,15 +359,16 @@ class Yolk(object):
                 active_status = 'non-active'
         if develop:
             if fields:
-                development_status = '! (%s)' % develop
+                development_status = '! ({})'.format(develop)
             else:
-                development_status = 'development (%s)' % develop
+                development_status = 'development ({})'.format(develop)
         else:
             development_status = installed_by
-        status = '%s %s' % (active_status, development_status)
+        status = '{} {}'.format(active_status, development_status)
         if fields:
-            print('%s (%s)%s %s' % (metadata['Name'], version, active_status,
-                                    development_status))
+            print(
+                '{} ({}){} {}'.format(metadata['Name'], version, active_status,
+                                      development_status))
         else:
             # Need intelligent justification
             print(metadata['Name'].ljust(15) + ' - ' + version.ljust(12) +
@@ -372,13 +378,13 @@ class Yolk(object):
             fields = [s.lower() for s in fields]
             for field in metadata.keys():
                 if field.lower() in fields:
-                    print('    %s: %s' % (field, metadata[field]))
+                    print('    {}: {}'.format(field, metadata[field]))
             print()
         elif show_metadata:
             # Print all available metadata fields
             for field in metadata.keys():
                 if field != 'Name' and field != 'Summary':
-                    print('    %s: %s' % (field, metadata[field]))
+                    print('    {}: {}'.format(field, metadata[field]))
 
     def show_deps(self):
         """Show dependencies for package(s)
@@ -396,8 +402,11 @@ class Yolk(object):
             i = len(list(pkg._dep_map.values())[0])
             if i:
                 while i:
-                    if not self.version or self.version and \
-                            pkg.version == self.version:
+                    if (
+                        not self.version or
+                        self.version and
+                        pkg.version == self.version
+                    ):
                         if self.version and i == len(list(
                                 pkg._dep_map.values())[0]):
                             print(pkg.project_name, pkg.version)
@@ -431,10 +440,10 @@ class Yolk(object):
         for entry in changelog:
             pkg = entry[0]
             if pkg != last_pkg:
-                print('%s %s\n\t%s' % (entry[0], entry[1], entry[3]))
+                print('{} {}\n\t{}'.format(entry[0], entry[1], entry[3]))
                 last_pkg = pkg
             else:
-                print('\t%s' % entry[3])
+                print('\t{}'.format(entry[3]))
 
         return 0
 
@@ -457,7 +466,7 @@ class Yolk(object):
             return 1
 
         for release in latest_releases:
-            print('%s %s' % (release[0], release[1]))
+            print('{} {}'.format(release[0], release[1]))
         return 0
 
     def show_download_links(self):
@@ -510,7 +519,7 @@ class Yolk(object):
         url = get_download_uri(self.project_name, version, source,
                                self.options.pypi_index)
         if url:
-            print('%s' % url)
+            print('{}'.format(url))
 
     def fetch(self):
         """Download a package.
@@ -601,8 +610,8 @@ class Yolk(object):
             return 1
         if os.path.exists(directory):
             print(
-                'Checkout directory exists - %s' %
-                directory, file=sys.stderr)
+                'Checkout directory exists - {}'.format(directory),
+                file=sys.stderr)
             return 1
         try:
             os.mkdir(directory)
@@ -611,7 +620,7 @@ class Yolk(object):
             return 1
         cwd = os.path.realpath(os.curdir)
         os.chdir(directory)
-        status, _ = run_command('/usr/bin/svn co %s' % svn_uri)
+        status, _ = run_command('/usr/bin/svn co {}'.format(svn_uri))
         os.chdir(cwd)
         return 0
 
@@ -655,7 +664,7 @@ class Yolk(object):
             for key in metadata.keys():
                 if not self.options.fields or (self.options.fields and
                                                self.options.fields == key):
-                    print('%s: %s' % (key, metadata[key]))
+                    print('{}: {}'.format(key, metadata[key]))
         return 0
 
     def versions_available(self):
@@ -671,12 +680,11 @@ class Yolk(object):
         else:
             if self.version:
                 print(
-                    'No package found for version %s' %
-                    self.version, file=sys.stderr)
+                    'No package found for version {}'.format(self.version),
+                    file=sys.stderr)
             else:
                 print(
-                    'No package found for %s' %
-                    self.project_name,
+                    'No package found for {}'.format(self.project_name),
                     file=sys.stderr)
             return 1
         return 0
@@ -697,8 +705,7 @@ class Yolk(object):
 
         """
 
-        usage = \
-            """You can search PyPI by the following:
+        usage = """You can search PyPI by the following:
      name
      version
      author
@@ -776,10 +783,10 @@ class Yolk(object):
                 summary = pkg['summary'].encode('utf-8')
             else:
                 summary = ''
-            print("""%s (%s):
-        %s
-    """ % (pkg['name'].encode('utf-8'), pkg['version'],
-           summary))
+            print("""{} ({}):
+        {}
+    """.format(pkg['name'].encode('utf-8'), pkg['version'],
+               summary))
         return 0
 
     def show_entry_map(self):
@@ -799,9 +806,9 @@ class Yolk(object):
                 pprinter.pprint(entry_map)
         except pkg_resources.DistributionNotFound:
             print(
-    'Distribution not found: %s' %
-     self.options.show_entry_map,
-     file=sys.stderr)
+                'Distribution not found: {}'.format(
+                    self.options.show_entry_map),
+                file=sys.stderr)
             return 1
         return 0
 
@@ -819,7 +826,7 @@ class Yolk(object):
             try:
                 plugin = entry_point.load()
                 print(plugin.__module__)
-                print('   %s' % entry_point)
+                print('   {}'.format(entry_point))
                 if plugin.__doc__:
                     print(plugin.__doc__)
                 print()
@@ -827,9 +834,9 @@ class Yolk(object):
                 pass
         if not found:
             print(
-    'No entry points found for %s' %
-     self.options.show_entry_points,
-     file=sys.stderr)
+                'No entry points found for {}'.format(
+                    self.options.show_entry_points),
+                file=sys.stderr)
             return 1
         return 0
 
@@ -863,11 +870,11 @@ class Yolk(object):
             dists = Distributions()
             project_name = dists.case_sensitive_name(project_name)
         else:
-            (project_name, all_versions) = \
-                self.pypi.query_versions_pypi(project_name)
+            (project_name, all_versions) = self.pypi.query_versions_pypi(
+                project_name)
 
             if not len(all_versions):
-                msg = "I'm afraid we have no '%s' at " % project_name
+                msg = "I'm afraid we have no '{}' at ".format(project_name)
                 msg += 'The Cheese Shop. A little Red Leicester, perhaps?'
                 print(msg, file=sys.stderr)
                 sys.exit(2)
@@ -1042,7 +1049,7 @@ def print_pkg_versions(project_name, versions):
 
     """
     for ver in versions:
-        print('%s %s' % (project_name, ver))
+        print('{} {}'.format(project_name, ver))
 
 
 def validate_pypi_opts(opt_parser):
