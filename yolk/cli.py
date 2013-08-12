@@ -863,13 +863,8 @@ class Yolk(object):
         return 0
 
     def yolk_version(self):
-        """Show yolk's version.
-
-        @returns: 0
-
-        """
-        self.logger.info('yolk version %s' % VERSION)
-        return 0
+        """Show yolk's version."""
+        print('yolk {}'.format(VERSION))
 
     def parse_pkg_ver(self, want_installed):
         """Return tuple with project_name and version from CLI args If the user
