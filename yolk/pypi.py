@@ -23,7 +23,6 @@ else:
     import urllib.request as urllib2
 import os
 import time
-import logging
 
 from yolk.utils import get_yolk_dir
 
@@ -103,7 +102,6 @@ class CheeseShop(object):
         self.pkg_cache_file = self.get_pkg_cache_file()
         self.last_sync_file = self.get_last_sync_file()
         self.pkg_list = None
-        self.logger = logging.getLogger('yolk')
         self.get_cache()
 
     def get_cache(self):
@@ -133,12 +131,8 @@ class CheeseShop(object):
             debug = 1
         else:
             debug = 0
-        try:
-            return xmlrpclib.Server(XML_RPC_SERVER, transport=ProxyTransport(),
-                                    verbose=debug)
-        except IOError:
-            self.logger("ERROR: Can't connect to XML-RPC server: %s"
-                        % XML_RPC_SERVER)
+        return xmlrpclib.Server(XML_RPC_SERVER, transport=ProxyTransport(),
+                                verbose=debug)
 
     def get_pkg_cache_file(self):
         """Returns filename of pkg cache."""

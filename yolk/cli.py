@@ -24,7 +24,6 @@ import sys
 import optparse
 import pkg_resources
 import webbrowser
-import logging
 import platform
 if platform.python_version().startswith('2'):
     from xmlrpclib import Fault as XMLRPCFault
@@ -102,7 +101,6 @@ class Yolk(object):
         self.all_versions = []
         self.pkg_spec = []
         self.options = None
-        self.logger = logging.getLogger('yolk')
 
         # Squelch output from setuptools
         # Add future offenders to this list.
@@ -127,28 +125,10 @@ class Yolk(object):
             plugin.configure(self.options, None)
             if plugin.enabled:
                 if not hasattr(plugin, method):
-                    self.logger.warn(
-                        'Error: plugin has no method: %s' % method)
                     plugin = None
                 else:
                     all_plugins.append(plugin)
         return all_plugins
-
-    def set_log_level(self):
-        """Set log level according to command-line options.
-
-        @returns: logger object
-
-        """
-
-        if self.options.debug:
-            self.logger.setLevel(logging.DEBUG)
-        elif self.options.quiet:
-            self.logger.setLevel(logging.ERROR)
-        else:
-            self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.StreamHandler())
-        return self.logger
 
     def run(self):
         """Perform actions based on CLI options.
@@ -244,11 +224,12 @@ class Yolk(object):
             pkg_list = get_pkglist()
 
         from multiprocessing.pool import ThreadPool
+
         def worker_function(pkg):
-            for (dist, active) in dists.get_distributions("all", pkg,
-                    dists.get_highest_installed(pkg)):
+            for (dist, active) in dists.get_distributions('all', pkg,
+                                                          dists.get_highest_installed(pkg)):
                 (project_name, versions) = \
-                        self.pypi.query_versions_pypi(dist.project_name)
+                    self.pypi.query_versions_pypi(dist.project_name)
             return (pkg, dist, project_name, versions)
 
         import multiprocessing
@@ -265,8 +246,8 @@ class Yolk(object):
                 if newest != dist.version:
                     # We may have newer than what PyPI knows about.
                     if pkg_resources.parse_version(dist.version) < \
-                        pkg_resources.parse_version(newest):
-                        print(" %s %s (%s)" %
+                            pkg_resources.parse_version(newest):
+                        print(' %s %s (%s)' %
                               (project_name, dist.version, newest))
 
         return 0
@@ -318,16 +299,17 @@ class Yolk(object):
             results = True
         if not results and self.project_name:
             if self.version:
-                pkg_spec = '%s==%s' % (self.project_name, self.version)
+                pkg_spec = '{}=={}'.format(self.project_name, self.version)
             else:
-                pkg_spec = '%s' % self.project_name
+                pkg_spec = self.project_name
             if show == 'all':
-                self.logger.error('There are no versions of %s installed.'
-                                  % pkg_spec)
+                print('There are no versions of {} installed'.format(pkg_spec),
+                      file=sys.stderr)
             else:
-                self.logger.error('There are no %s versions of %s installed.'
-                                  %
-                                 (show, pkg_spec))
+                print(
+                    'There are no {} versions of {} installed'.format(
+                        show, pkg_spec),
+                    file=sys.stderr)
             return 2
         elif show == 'all' and results and self.options.fields:
             print("Versions with '*' are non-active.")
@@ -434,14 +416,15 @@ class Yolk(object):
         """
         hours = self.options.show_pypi_changelog
         if not hours.isdigit():
-            self.logger.error('Error: You must supply an integer.')
+            print('You must supply an integer',
+                  file=sys.stderr)
             return 1
 
         try:
             changelog = self.pypi.changelog(int(hours))
         except XMLRPCFault as err_msg:
-            self.logger.error(err_msg)
-            self.logger.error("ERROR: Couldn't retrieve changelog.")
+            print(err_msg, file=sys.stderr)
+            print("Couldn't retrieve changelog", file=sys.stderr)
             return 1
 
         last_pkg = ''
@@ -464,13 +447,13 @@ class Yolk(object):
         try:
             hours = int(self.options.show_pypi_releases)
         except ValueError:
-            self.logger.error('ERROR: You must supply an integer.')
+            print('You must supply an integer', file=sys.stderr)
             return 1
         try:
             latest_releases = self.pypi.updated_releases(hours)
         except XMLRPCFault as err_msg:
-            self.logger.error(err_msg)
-            self.logger.error("ERROR: Couldn't retrieve latest releases.")
+            print(err_msg, file=sys.stderr)
+            print("Couldn't retrieve latest releases.", file=sys.stderr)
             return 1
 
         for release in latest_releases:
@@ -546,9 +529,10 @@ class Yolk(object):
                 directory = self.project_name + '_svn'
                 return self.fetch_svn(svn_uri, directory)
             else:
-                self.logger.error(
-                    'ERROR: No subversion repository found for %s' %
-                    self.project_name)
+                print(
+                    'No subversion repository found for {}'.format(
+                        self.project_name),
+                    file=sys.stderr)
                 return 1
         elif self.options.file_type == 'source':
             source = True
@@ -559,8 +543,8 @@ class Yolk(object):
         if uri:
             return self.fetch_uri(directory, uri)
         else:
-            self.logger.error('No %s URI found for package: %s ' %
-                             (self.options.file_type, self.project_name))
+            print('No {} URI found for package: {}'.format(
+                (self.options.file_type, self.project_name)))
             return 1
 
     def fetch_uri(self, directory, uri):
@@ -578,22 +562,24 @@ class Yolk(object):
         """
         filename = os.path.basename(urlparse(uri)[2])
         if os.path.exists(filename):
-            self.logger.error('ERROR: File exists: ' + filename)
+            print('File exists: ' + filename, file=sys.stderr)
             return 1
 
         try:
             downloaded_filename, headers = urlretrieve(uri, filename)
         except IOError as err_msg:
-            self.logger.error('Error downloading package %s from URL %s'
-                              % (filename, uri))
-            self.logger.error(str(err_msg))
+            print(
+                'Error downloading package {} from URL {}'.format(
+                    filename, uri),
+                file=sys.stderr)
+            print(str(err_msg), file=sys.stderr)
             return 1
 
         if 'text/html' in headers:
             dfile = open(downloaded_filename)
             if re.search('404 Not Found', ''.join(dfile.readlines())):
                 dfile.close()
-                self.logger.error("'404 Not Found' error")
+                print("'404 Not Found' error", file=sys.stderr)
                 return 1
             dfile.close()
         return 0
@@ -611,16 +597,17 @@ class Yolk(object):
 
         """
         if not command_successful('svn --version'):
-            self.logger.error('ERROR: Do you have subversion installed?')
+            print('Do you have subversion installed?', file=sys.stderr)
             return 1
         if os.path.exists(directory):
-            self.logger.error('ERROR: Checkout directory exists - %s'
-                              % directory)
+            print(
+                'Checkout directory exists - %s' %
+                directory, file=sys.stderr)
             return 1
         try:
             os.mkdir(directory)
         except OSError as err_msg:
-            self.logger.error('ERROR: ' + str(err_msg))
+            print('' + str(err_msg), file=sys.stderr)
             return 1
         cwd = os.path.realpath(os.curdir)
         os.chdir(directory)
@@ -648,7 +635,7 @@ class Yolk(object):
                     browser.open(metadata['home_page'], 2)
                 return 0
 
-        self.logger.error('No homepage URL found.')
+        print('No homepage URL found', file=sys.stderr)
         return 1
 
     def query_metadata_pypi(self):
@@ -683,11 +670,14 @@ class Yolk(object):
             print_pkg_versions(self.project_name, self.all_versions)
         else:
             if self.version:
-                self.logger.error('No package found for version %s'
-                                  % self.version)
+                print(
+                    'No package found for version %s' %
+                    self.version, file=sys.stderr)
             else:
-                self.logger.error(
-                    'No package found for %s' % self.project_name)
+                print(
+                    'No package found for %s' %
+                    self.project_name,
+                    file=sys.stderr)
             return 1
         return 0
 
@@ -728,7 +718,7 @@ class Yolk(object):
           """
 
         if not spec:
-            self.logger.error(usage)
+            print(usage, file=sys.stderr)
             return (None, None)
 
         try:
@@ -753,7 +743,7 @@ class Yolk(object):
             if second:
                 spec[key2] = term2
         except:
-            self.logger.error(usage)
+            print(usage, file=sys.stderr)
             spec = operator = None
         return (spec, operator)
 
@@ -808,8 +798,10 @@ class Yolk(object):
             if entry_map:
                 pprinter.pprint(entry_map)
         except pkg_resources.DistributionNotFound:
-            self.logger.error('Distribution not found: %s'
-                              % self.options.show_entry_map)
+            print(
+    'Distribution not found: %s' %
+     self.options.show_entry_map,
+     file=sys.stderr)
             return 1
         return 0
 
@@ -834,8 +826,10 @@ class Yolk(object):
             except ImportError:
                 pass
         if not found:
-            self.logger.error('No entry points found for %s'
-                              % self.options.show_entry_points)
+            print(
+    'No entry points found for %s' %
+     self.options.show_entry_points,
+     file=sys.stderr)
             return 1
         return 0
 
@@ -875,7 +869,7 @@ class Yolk(object):
             if not len(all_versions):
                 msg = "I'm afraid we have no '%s' at " % project_name
                 msg += 'The Cheese Shop. A little Red Leicester, perhaps?'
-                self.logger.error(msg)
+                print(msg, file=sys.stderr)
                 sys.exit(2)
         return (project_name, version, all_versions)
 
@@ -907,12 +901,12 @@ def setup_opt_parser():
     group_local = optparse.OptionGroup(
         opt_parser,
         'Query installed Python packages',
-        "The following options show information about installed Python "
-        "packages. Activated packages are normal packages on sys.path that "
-        "can be imported. Non-activated packages need "
+        'The following options show information about installed Python '
+        'packages. Activated packages are normal packages on sys.path that '
+        'can be imported. Non-activated packages need '
         "'pkg_resources.require()' before they can be imported, such as "
         "packages installed with 'easy_install --multi-version'. PKG_SPEC can "
-        "be either a package name or package name and version e.g. Paste==0.9")
+        'be either a package name or package name and version e.g. Paste==0.9')
 
     group_local.add_option(
         '-l', '--list', action='store_true', dest=
@@ -976,7 +970,7 @@ def setup_opt_parser():
         metavar='PKG_SPEC', dest='show_download_links',
         default=False,
         help="Show download URL's for package listed on PyPI. Use with -T to "
-             "specify egg, source etc.")
+             'specify egg, source etc.')
 
     group_pypi.add_option(
         '-F', '--fetch-package', action='store',
@@ -1027,7 +1021,7 @@ def setup_opt_parser():
                           'store', dest='versions_available',
                           default=False, metavar='PKG_SPEC',
                           help='Show available versions for given package ' +
-                          'listed on PyPI.')
+                               'listed on PyPI.')
     opt_parser.add_option_group(group_local)
     opt_parser.add_option_group(group_pypi)
     # add opts from plugins
