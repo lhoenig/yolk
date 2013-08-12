@@ -55,18 +55,10 @@ object, as well as the current config object. Plugins should configure their
 behavior based on the user-selected settings, and may raise exceptions
 if the configured behavior is nonsensical.
 
-Logging
-=======
-
-yolk uses the logging classes from the standard library. To enable users
-to view debug messages easily, plugins should use ``logging.getLogger()`` to
-acquire a logger in the ``yolk.plugins`` namespace.
-
 """
 
 import pkg_resources
 from warnings import warn
-from yolk.plugins.base import Plugin
 
 
 def call_plugins(plugins, method, *arg, **kw):
@@ -94,9 +86,7 @@ def load_plugins(builtin=True, others=True):
         except KeyboardInterrupt:
             raise
         except Exception as err_msg:
-            # never want a plugin load to exit yolk
-            # but we can't log here because the logger is not yet
-            # configured
+            # Never want a plugin load to exit yolk.
             warn('Unable to load plugin %s: %s' %
                 (entry_point, err_msg), RuntimeWarning)
             continue
