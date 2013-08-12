@@ -5,12 +5,11 @@ python -m yolk --show-updates
 python -m yolk --query-metadata=yolk
 python -m yolk --depends=pip
 
-# I would grep to confirm the expected error. But this piece of shit stops
-# printing the error message if I pipe it.
-#python -m yolk --depends=foo 2>&1 | grep 'foo is not installed'
-python -m yolk --depends=foo
+python -m yolk --depends=fake_foo 2>&1 | grep 'fake_foo is not installed'
 
 if [ "$TRAVIS_PYTHON_VERSION" != "2.7" ]
 then
     python -m doctest yolk/utils.py
 fi
+
+echo -e '\x1b[01;32mOK\x1b[0m'

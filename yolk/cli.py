@@ -158,7 +158,6 @@ class Yolk(object):
         """
         opt_parser = setup_opt_parser()
         (self.options, remaining_args) = opt_parser.parse_args()
-        logger = self.set_log_level()
 
         pkg_spec = validate_pypi_opts(opt_parser)
         if not pkg_spec:
@@ -192,7 +191,8 @@ class Yolk(object):
             (self.project_name, self.version, self.all_versions) = \
                 self.parse_pkg_ver(want_installed)
             if want_installed and not self.project_name:
-                logger.error('%s is not installed.' % pkg_spec)
+                print('{} is not installed'.format(pkg_spec),
+                      file=sys.stderr)
                 return 1
 
         # I could prefix all these with 'cmd_' and the methods also
