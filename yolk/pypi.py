@@ -119,8 +119,6 @@ class CheeseShop(object):
         try:
             self.pkg_list = self.query_cached_package_list()
         except (IOError, ValueError):
-            self.logger.debug(
-                'DEBUG: Fetching package list cache from PyPi...')
             self.fetch_pkg_list(True)
 
     def get_last_sync_file(self):
@@ -149,8 +147,6 @@ class CheeseShop(object):
     def query_versions_pypi(self, package_name):
         """Fetch list of available versions for a package from PyPI."""
         if not package_name in self.pkg_list:
-            self.logger.debug('Package %s not in cache, querying PyPI...'
-                              % package_name)
             self.fetch_pkg_list()
         # I have to set version=[] for edge cases like "Magic file extensions"
         # but I'm not sure why this happens. It's included with Python or
@@ -158,8 +154,6 @@ class CheeseShop(object):
         versions = []
         for pypi_pkg in self.pkg_list:
             if pypi_pkg.lower() == package_name.lower():
-                if self.debug:
-                    self.logger.debug('DEBUG: %s' % package_name)
                 versions = self.package_releases(pypi_pkg)
                 package_name = pypi_pkg
                 break
@@ -167,14 +161,11 @@ class CheeseShop(object):
 
     def query_cached_package_list(self):
         """Return list of cached package names from PYPI."""
-        if self.debug:
-            self.logger.debug('DEBUG: reading cache file')
         with open(self.pkg_cache_file, 'r') as input_file:
             return ast.literal_eval(input_file.read())
 
     def fetch_pkg_list(self, ignore_cache=False):
         """Fetch and cache master list of package names from PYPI."""
-        self.logger.debug('DEBUG: Fetching package name list from PyPI')
         if (
             not ignore_cache and
             os.path.exists(self.pkg_cache_file) and
@@ -220,9 +211,6 @@ class CheeseShop(object):
 
     def package_releases(self, package_name):
         """Query PYPI via XMLRPC interface for a pkg's available versions."""
-        if self.debug:
-            self.logger.debug('DEBUG: querying PyPI for versions of '
-                              + package_name)
         return self.xmlrpc.package_releases(package_name)
 
     def get_download_urls(self, package_name, version='', pkg_type='all'):

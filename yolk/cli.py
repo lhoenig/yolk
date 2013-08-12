@@ -242,7 +242,6 @@ class Yolk(object):
         else:
             # Check for every installed package
             pkg_list = get_pkglist()
-        found = None
 
         from multiprocessing.pool import ThreadPool
         def worker_function(pkg):
@@ -267,14 +266,9 @@ class Yolk(object):
                     # We may have newer than what PyPI knows about.
                     if pkg_resources.parse_version(dist.version) < \
                         pkg_resources.parse_version(newest):
-                        found = True
                         print(" %s %s (%s)" %
                               (project_name, dist.version, newest))
 
-        if not found and self.project_name:
-            self.logger.info('You have the latest version installed.')
-        elif not found:
-            self.logger.info('No newer packages found at The Cheese Shop')
         return 0
 
     def show_distributions(self, show):
@@ -429,8 +423,6 @@ class Yolk(object):
                             pkg._dep_map.values())[0][i - 1]))
                     i -= 1
             else:
-                self.logger.info(
-                    'No dependency information was supplied with the package.')
                 return 1
         return 0
 
@@ -529,20 +521,13 @@ class Yolk(object):
         """
 
         if version == 'dev':
-            pkg_type = 'subversion'
             source = True
-        elif source:
-            pkg_type = 'source'
-        else:
-            pkg_type = 'egg'
 
         # Use setuptools monkey-patch to grab url
         url = get_download_uri(self.project_name, version, source,
                                self.options.pypi_index)
         if url:
             print('%s' % url)
-        else:
-            self.logger.info('No download URL found for %s' % pkg_type)
 
     def fetch(self):
         """Download a package.
@@ -598,7 +583,6 @@ class Yolk(object):
 
         try:
             downloaded_filename, headers = urlretrieve(uri, filename)
-            self.logger.info('Downloaded ./' + filename)
         except IOError as err_msg:
             self.logger.error('Error downloading package %s from URL %s'
                               % (filename, uri))
@@ -640,12 +624,8 @@ class Yolk(object):
             return 1
         cwd = os.path.realpath(os.curdir)
         os.chdir(directory)
-        self.logger.info('Doing subversion checkout for %s' % svn_uri)
-        status, output = run_command('/usr/bin/svn co %s' % svn_uri)
-        self.logger.info(output)
+        status, _ = run_command('/usr/bin/svn co %s' % svn_uri)
         os.chdir(cwd)
-        self.logger.info("subversion checkout is in directory './%s'"
-                         % directory)
         return 0
 
     def browse_website(self, browser=None):
@@ -660,10 +640,7 @@ class Yolk(object):
         if len(self.all_versions):
             metadata = self.pypi.release_data(self.project_name,
                                               self.all_versions[0])
-            self.logger.debug('DEBUG: browser: %s' % browser)
             if 'home_page' in metadata:
-                self.logger.info('Launching browser: %s'
-                                 % metadata['home_page'])
                 if browser == 'konqueror':
                     browser = webbrowser.Konqueror()
                 else:
