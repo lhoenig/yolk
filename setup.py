@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+"""Installer for yolk."""
 
 from setuptools import setup
 
