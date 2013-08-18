@@ -230,6 +230,7 @@ class Yolk(object):
             for (dist, active) in dists.get_distributions(
                     'all', pkg,
                     dists.get_highest_installed(pkg)):
+
                 (project_name, versions) = self.pypi.query_versions_pypi(
                     dist.project_name)
             return (pkg, dist, project_name, versions)

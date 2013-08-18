@@ -147,7 +147,7 @@ class CheeseShop(object):
         # because it has a space in it's name?
         versions = []
         for pypi_pkg in self.pkg_list:
-            if pypi_pkg.lower() == package_name.lower():
+            if normalize(pypi_pkg) == normalize(package_name):
                 versions = self.package_releases(pypi_pkg)
                 package_name = pypi_pkg
                 break
@@ -281,3 +281,8 @@ def get_seconds(hours):
 
     """
     return int(time.time() - (60 * 60) * hours)
+
+
+def normalize(name):
+    """Return normalized name."""
+    return name.lower().replace('_', '-')
