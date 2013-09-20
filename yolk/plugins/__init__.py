@@ -61,23 +61,6 @@ import pkg_resources
 from warnings import warn
 
 
-def call_plugins(plugins, method, *arg, **kw):
-    """Call all method on plugins in list, that define it, with provided
-    arguments.
-
-    The first response that is not None is returned.
-
-    """
-    for plug in plugins:
-        func = getattr(plug, method, None)
-        if func is None:
-            continue
-        result = func(*arg, **kw)
-        if result is not None:
-            return result
-    return None
-
-
 def load_plugins(builtin=True, others=True):
     """Load plugins, either builtin, others, or both."""
     for entry_point in pkg_resources.iter_entry_points('yolk.plugins'):

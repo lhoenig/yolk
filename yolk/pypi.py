@@ -100,7 +100,6 @@ class CheeseShop(object):
             self.yolk_dir = get_yolk_dir()
         self.xmlrpc = self.get_xmlrpc_server()
         self.pkg_cache_file = self.get_pkg_cache_file()
-        self.last_sync_file = self.get_last_sync_file()
         self.pkg_list = None
         self.get_cache()
 
@@ -118,11 +117,6 @@ class CheeseShop(object):
             self.pkg_list = self.query_cached_package_list()
         except (IOError, ValueError):
             self.fetch_pkg_list(True)
-
-    def get_last_sync_file(self):
-        """Get the last time in seconds since The Epoc since the last pkg list
-        sync."""
-        return os.path.abspath(self.yolk_dir + '/last_sync')
 
     def get_xmlrpc_server(self):
         """Returns PyPI's XML-RPC server instance."""
