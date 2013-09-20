@@ -929,20 +929,22 @@ def setup_parser():
         help='List non-activated packages installed by distutils or '
              'setuptools. Use PKG_SPEC to narrow results.')
 
-    group_local.add_argument('-m', '--metadata', action='store_true', dest=
-                             'metadata', default=False,
-                             help='Show all metadata for packages installed by '
-                             'setuptools (use with -l -a or -n)')
+    group_local.add_argument(
+        '-m', '--metadata', action='store_true', dest='metadata',
+        default=False,
+        help='Show all metadata for packages installed by '
+             'setuptools (use with -l -a or -n)')
 
-    group_local.add_argument('-f', '--fields', action='store', dest=
-                             'fields', default=False,
-                             help='Show specific metadata fields. '
-                             '(use with -m or -M)')
+    group_local.add_argument(
+        '-f', '--fields', action='store', dest='fields', default=False,
+        help='Show specific metadata fields. '
+             '(use with -m or -M)')
 
-    group_local.add_argument('-d', '--depends', action='store', dest=
-                             'show_deps', metavar='PKG_SPEC',
-                             help='Show dependencies for a package installed by '
-                             'setuptools if they are available.')
+    group_local.add_argument(
+        '-d', '--depends', action='store', dest=
+        'show_deps', metavar='PKG_SPEC',
+        help='Show dependencies for a package installed by '
+             'setuptools if they are available.')
 
     group_local.add_argument(
         '--entry-points', action='store',
@@ -981,10 +983,11 @@ def setup_parser():
         help='Download package source or egg. You can specify a file type '
              'with -T')
 
-    group_pypi.add_argument('-H', '--browse-homepage', action='store',
-                            metavar='PKG_SPEC', dest='browse_website',
-                            default=False,
-                            help='Launch web browser at home page for package.')
+    group_pypi.add_argument(
+        '-H', '--browse-homepage', action='store',
+        metavar='PKG_SPEC', dest='browse_website',
+        default=False,
+        help='Launch web browser at home page for package.')
 
     group_pypi.add_argument('-I', '--pypi-index', action='store',
                             dest='pypi_index',
