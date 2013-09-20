@@ -1,5 +1,4 @@
-# pylint: disable-msg=W0613,W0612,W0212,W0511,R0912,C0322,W0704
-# W0511 = XXX (my own todo's)
+# PYTHON_ARGCOMPLETE_OK
 
 """cli.
 
@@ -137,6 +136,13 @@ class Yolk(object):
 
         """
         parser = setup_parser()
+
+        try:
+            import argcomplete
+            argcomplete.autocomplete(parser)
+        except ImportError:
+            pass
+
         self.options = parser.parse_args()
 
         pkg_spec = validate_pypi_opts(parser)
