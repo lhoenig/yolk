@@ -896,8 +896,8 @@ def setup_parser():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--version', action='store_true', dest=
-                        'yolk_version', default=False,
+    parser.add_argument('--version', action='store_true', dest='yolk_version',
+                        default=False,
                         help='Show yolk version and exit.')
 
     parser.add_argument('--debug', action='store_true', dest=
