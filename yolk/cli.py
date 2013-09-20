@@ -37,7 +37,6 @@ from yolk.metadata import get_metadata
 from yolk.yolklib import get_highest_version, Distributions
 from yolk.pypi import CheeseShop
 from yolk.setuptools_support import get_download_uri, get_pkglist
-from yolk.plugins import load_plugins
 from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
 
@@ -1033,14 +1032,6 @@ def setup_parser():
                             default=False, metavar='PKG_SPEC',
                             help='Show available versions for given package ' +
                             'listed on PyPI.')
-
-    # add opts from plugins
-    for plugcls in load_plugins(others=True):
-        plug = plugcls()
-        try:
-            plug.add_arguments(parser)
-        except AttributeError:
-            pass
 
     return parser
 
