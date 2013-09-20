@@ -201,69 +201,6 @@ class CheeseShop(object):
         """Query PYPI via XMLRPC interface for a pkg's available versions."""
         return self.xmlrpc.package_releases(package_name)
 
-    def get_download_urls(self, package_name, version='', pkg_type='all'):
-        """Query PyPI for pkg download URI for a package."""
-        if version:
-            versions = [version]
-        else:
-            # If they don't specify version, show em all.
-            (package_name, versions) = self.query_versions_pypi(package_name)
-
-        all_urls = []
-        for ver in versions:
-            metadata = self.release_data(package_name, ver)
-            for urls in self.release_urls(package_name, ver):
-                if pkg_type == 'source' and urls['packagetype'] == 'sdist':
-                    all_urls.append(urls['url'])
-                elif pkg_type == 'egg' and \
-                        urls['packagetype'].startswith('bdist'):
-                    all_urls.append(urls['url'])
-                elif pkg_type == 'all':
-                    # All
-                    all_urls.append(urls['url'])
-
-            # Try the package's metadata directly in case there's nothing
-            # returned by XML-RPC's release_urls()
-            if metadata and 'download_url' in metadata and \
-                metadata['download_url'] != 'UNKNOWN' and \
-                    metadata['download_url'] is not None:
-                if metadata['download_url'] not in all_urls:
-                    if pkg_type != 'all':
-                        url = filter_url(pkg_type, metadata['download_url'])
-                        if url:
-                            all_urls.append(url)
-        return all_urls
-
-
-def filter_url(pkg_type, url):
-    """Returns URL of specified file type.
-
-    'source', 'egg', or 'all'
-
-    """
-    bad_stuff = ['?modtime', '#md5=']
-    for junk in bad_stuff:
-        if junk in url:
-            url = url.split(junk)[0]
-            break
-
-    # pkg_spec==dev (svn)
-    if url.endswith('-dev'):
-        url = url.split('#egg=')[0]
-
-    if pkg_type == 'all':
-        return url
-
-    elif pkg_type == 'source':
-        valid_source_types = ['.tgz', '.tar.gz', '.zip', '.tbz2', '.tar.bz2']
-        for extension in valid_source_types:
-            if url.lower().endswith(extension):
-                return url
-
-    elif pkg_type == 'egg':
-        if url.lower().endswith('.egg'):
-            return url
-
 
 def get_seconds(hours):
     """Get number of seconds since epoch from now minus `hours`
