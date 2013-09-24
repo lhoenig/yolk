@@ -1030,8 +1030,8 @@ def setup_parser():
     group_pypi.add_argument('-V', '--versions-available', action=
                             'store', dest='versions_available',
                             default=False, metavar='PKG_SPEC',
-                            help='Show available versions for given package ' +
-                            'listed on PyPI.')
+                            help='Show available versions for given package '
+                                 'listed on PyPI.')
 
     return parser
 
