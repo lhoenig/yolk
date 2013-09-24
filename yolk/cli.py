@@ -23,15 +23,16 @@ import sys
 import argparse
 import pkg_resources
 import webbrowser
-import platform
-if platform.python_version().startswith('2'):
+
+try:
     from xmlrpclib import Fault as XMLRPCFault
     from urllib import urlretrieve
     from urlparse import urlparse
-else:
+except ImportError:
     from xmlrpc.client import Fault as XMLRPCFault
     from urllib.request import urlretrieve
     from urllib.parse import urlparse
+
 from distutils.sysconfig import get_python_lib
 from yolk.metadata import get_metadata
 from yolk.yolklib import get_highest_version, Distributions
