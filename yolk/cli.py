@@ -256,9 +256,10 @@ class Yolk(object):
             # Check for every installed package
             pkg_list = get_pkglist()
 
-        print(
-            'pip install --upgrade ' +
-            ' '.join([values[0] for values in _updates(pkg_list, self.pypi)]))
+        argument = ' '.join([values[0]
+                             for values in _updates(pkg_list, self.pypi)])
+        if argument:
+            print('pip install --upgrade ' + argument)
 
         return 0
 
