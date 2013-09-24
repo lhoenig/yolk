@@ -160,13 +160,18 @@ class Yolk(object):
             self.options.show_all or
             self.options.show_active or
             self.options.show_non_active or
-            (self.options.show_updates and pkg_spec)
+            (self.options.show_updates and pkg_spec) or
+            self.options.pip_updates
         ):
             want_installed = True
         else:
             want_installed = False
         # show_updates may or may not have a pkg_spec
-        if not want_installed or self.options.show_updates:
+        if (
+            not want_installed or
+            self.options.show_updates or
+            self.options.pip_updates
+        ):
             self.pypi = CheeseShop(self.options.debug)
             # XXX: We should return 2 here if we couldn't create xmlrpc server
 
@@ -182,7 +187,8 @@ class Yolk(object):
         # I could prefix all these with 'cmd_' and the methods also
         # and then iterate over the `options` dictionary keys...
         commands = ['show_deps', 'query_metadata_pypi', 'fetch',
-                    'versions_available', 'show_updates', 'browse_website',
+                    'versions_available', 'show_updates', 'pip_updates',
+                    'browse_website',
                     'show_download_links', 'pypi_search',
                     'show_pypi_changelog', 'show_pypi_releases',
                     'yolk_version', 'show_all',
@@ -219,7 +225,6 @@ class Yolk(object):
         @returns: None
 
         """
-        dists = Distributions()
         if self.project_name:
             # Check for a single package
             pkg_list = [self.project_name]
@@ -227,37 +232,33 @@ class Yolk(object):
             # Check for every installed package
             pkg_list = get_pkglist()
 
-        from multiprocessing.pool import ThreadPool
+        for (project_name, version, newest) in _updates(pkg_list, self.pypi):
+            print(' {} {} ({})'.format(project_name,
+                                       version,
+                                       newest))
 
-        def worker_function(pkg):
-            for (dist, active) in dists.get_distributions(
-                    'all', pkg,
-                    dists.get_highest_installed(pkg)):
+        return 0
 
-                (project_name, versions) = self.pypi.query_versions_pypi(
-                    dist.project_name)
-            return (pkg, dist, project_name, versions)
+    def pip_updates(self):
+        """Check installed packages for available updates on PyPI.
 
-        import multiprocessing
-        pool = ThreadPool(multiprocessing.cpu_count())
+        @param project_name: optional package name to check; checks every
+                             installed package if none specified
+        @type project_name: string
 
-        for (pkg, dist, project_name, versions) in pool.map(worker_function,
-                                                            pkg_list):
-            if versions:
-                # PyPI returns them in chronological order,
-                # but who knows if its guaranteed in the API?
-                # Make sure we grab the highest version:
+        @returns: None
 
-                newest = get_highest_version(versions)
-                if newest != dist.version:
-                    # We may have newer than what PyPI knows about.
-                    if (
-                        pkg_resources.parse_version(dist.version) <
-                        pkg_resources.parse_version(newest)
-                    ):
-                        print(' {} {} ({})'.format(project_name,
-                                                   dist.version,
-                                                   newest))
+        """
+        if self.project_name:
+            # Check for a single package
+            pkg_list = [self.project_name]
+        else:
+            # Check for every installed package
+            pkg_list = get_pkglist()
+
+        print(
+            'pip install --upgrade ' +
+            ' '.join([values[0] for values in _updates(pkg_list, self.pypi)]))
 
         return 0
 
@@ -898,15 +899,15 @@ def setup_parser():
 
     parser.add_argument('--version', action='store_true', dest='yolk_version',
                         default=False,
-                        help='Show yolk version and exit.')
+                        help='show yolk version and exit')
 
     parser.add_argument('--debug', action='store_true', dest=
                         'debug', default=False,
-                        help='Show debugging information.')
+                        help='show debugging information')
 
     parser.add_argument('-q', '--quiet', action='store_true', dest=
                         'quiet', default=False,
-                        help='Show less output.')
+                        help='show less output')
 
     group_local = parser.add_argument_group(
         'Query installed Python packages',
@@ -920,49 +921,49 @@ def setup_parser():
     group_local.add_argument(
         '-l', '--list', action='store_true', dest=
         'show_all', default=False,
-        help='List all Python packages installed by distutils or setuptools. '
-             'Use PKG_SPEC to narrow results.')
+        help='list all Python packages installed by distutils or setuptools. '
+             'Use PKG_SPEC to narrow results')
 
     group_local.add_argument(
         '-a', '--activated', action='store_true',
         dest='show_active', default=False,
-        help='List activated packages installed by distutils or setuptools. '
-             'Use PKG_SPEC to narrow results.')
+        help='list activated packages installed by distutils or setuptools. '
+             'Use PKG_SPEC to narrow results')
 
     group_local.add_argument(
         '-n', '--non-activated', action='store_true',
         dest='show_non_active', default=False,
-        help='List non-activated packages installed by distutils or '
-             'setuptools. Use PKG_SPEC to narrow results.')
+        help='list non-activated packages installed by distutils or '
+             'setuptools. Use PKG_SPEC to narrow results')
 
     group_local.add_argument(
         '-m', '--metadata', action='store_true', dest='metadata',
         default=False,
-        help='Show all metadata for packages installed by '
+        help='show all metadata for packages installed by '
              'setuptools (use with -l -a or -n)')
 
     group_local.add_argument(
         '-f', '--fields', action='store', dest='fields', default=False,
-        help='Show specific metadata fields. '
+        help='show specific metadata fields. '
              '(use with -m or -M)')
 
     group_local.add_argument(
         '-d', '--depends', action='store', dest=
         'show_deps', metavar='PKG_SPEC',
-        help='Show dependencies for a package installed by '
-             'setuptools if they are available.')
+        help='show dependencies for a package installed by '
+             'setuptools if they are available')
 
     group_local.add_argument(
         '--entry-points', action='store',
         dest='show_entry_points', default=False,
-        help='List entry points for a module. e.g. --entry-points '
+        help='list entry points for a module. e.g. --entry-points '
              'nose.plugins',
         metavar='MODULE')
 
     group_local.add_argument(
         '--entry-map', action='store',
         dest='show_entry_map', default=False,
-        help='List entry map for a package. e.g. --entry-map yolk',
+        help='list entry map for a package. e.g. --entry-map yolk',
         metavar='PACKAGE_NAME')
 
     group_pypi = parser.add_argument_group(
@@ -973,49 +974,49 @@ def setup_parser():
         '-C', '--changelog', action='store',
         dest='show_pypi_changelog', metavar='HOURS',
         default=False,
-        help='Show detailed ChangeLog for PyPI for last n hours.')
+        help='show detailed ChangeLog for PyPI for last n hours')
 
     group_pypi.add_argument(
         '-D', '--download-links', action='store',
         metavar='PKG_SPEC', dest='show_download_links',
         default=False,
-        help="Show download URL's for package listed on PyPI. Use with -T to "
-             'specify egg, source etc.')
+        help="show download URL's for package listed on PyPI. Use with -T to "
+             'specify egg, source etc')
 
     group_pypi.add_argument(
         '-F', '--fetch-package', action='store',
         metavar='PKG_SPEC', dest='fetch',
         default=False,
-        help='Download package source or egg. You can specify a file type '
+        help='download package source or egg; You can specify a file type '
              'with -T')
 
     group_pypi.add_argument(
         '-H', '--browse-homepage', action='store',
         metavar='PKG_SPEC', dest='browse_website',
         default=False,
-        help='Launch web browser at home page for package.')
+        help='launch web browser at home page for package')
 
     group_pypi.add_argument('-I', '--pypi-index', action='store',
                             dest='pypi_index',
                             default=False,
-                            help='Specify PyPI mirror for package index.')
+                            help='specify PyPI mirror for package index')
 
     group_pypi.add_argument('-L', '--latest-releases', action='store',
                             dest='show_pypi_releases', metavar='HOURS',
                             default=False,
-                            help='Show PyPI releases for last n hours.')
+                            help='show PyPI releases for last n hours')
 
     group_pypi.add_argument(
         '-M', '--query-metadata', action='store',
         dest='query_metadata_pypi', default=False,
         metavar='PKG_SPEC',
-        help='Show metadata for a package listed on PyPI. Use -f to show '
-             'particular fields.')
+        help='show metadata for a package listed on PyPI. Use -f to show '
+             'particular fields')
 
     group_pypi.add_argument(
         '-S', action='store', dest='pypi_search',
         default=False,
-        help='Search PyPI by spec and optional AND/OR operator.',
+        help='search PyPI by spec and optional AND/OR operator',
         metavar='SEARCH_SPEC <AND/OR SEARCH_SPEC>')
 
     group_pypi.add_argument(
@@ -1026,13 +1027,19 @@ def setup_parser():
     group_pypi.add_argument('-U', '--show-updates', action='store_true',
                             dest='show_updates',
                             default=False,
-                            help='Check PyPI for updates on package(s).')
+                            help='check PyPI for updates on package(s)')
+
+    group_pypi.add_argument('--pip-updates', action='store_true',
+                            dest='pip_updates',
+                            default=False,
+                            help='print pip command to upgrade outdated '
+                                 'packages')
 
     group_pypi.add_argument('-V', '--versions-available', action=
                             'store', dest='versions_available',
                             default=False, metavar='PKG_SPEC',
-                            help='Show available versions for given package '
-                                 'listed on PyPI.')
+                            help='show available versions for given package '
+                                 'listed on PyPI')
 
     return parser
 
@@ -1065,6 +1072,41 @@ def validate_pypi_opts(parser):
     for pkg_spec in options_pkg_specs:
         if pkg_spec:
             return pkg_spec
+
+
+def _updates(names, pypi):
+    """Return updates."""
+    dists = Distributions()
+
+    from multiprocessing.pool import ThreadPool
+
+    def worker_function(pkg):
+        for (dist, active) in dists.get_distributions(
+                'all', pkg,
+                dists.get_highest_installed(pkg)):
+
+            (project_name, versions) = pypi.query_versions_pypi(
+                dist.project_name)
+        return (pkg, dist, project_name, versions)
+
+    import multiprocessing
+    pool = ThreadPool(multiprocessing.cpu_count())
+
+    for (pkg, dist, project_name, versions) in pool.map(worker_function,
+                                                        names):
+        if versions:
+            # PyPI returns them in chronological order,
+            # but who knows if its guaranteed in the API?
+            # Make sure we grab the highest version:
+
+            newest = get_highest_version(versions)
+            if newest != dist.version:
+                # We may have newer than what PyPI knows about.
+                if (
+                    pkg_resources.parse_version(dist.version) <
+                    pkg_resources.parse_version(newest)
+                ):
+                    yield (project_name, dist.version, newest)
 
 
 def main():
