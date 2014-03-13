@@ -130,7 +130,7 @@ class CheeseShop(object):
 
     def get_pkg_cache_file(self):
         """Returns filename of pkg cache."""
-        return os.path.abspath('%s/pkg_list.pkl' % self.yolk_dir)
+        return os.path.abspath('%s/pkg_list.py' % self.yolk_dir)
 
     def query_versions_pypi(self, package_name):
         """Fetch list of available versions for a package from PyPI."""
