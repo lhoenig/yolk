@@ -146,9 +146,14 @@ class Yolk(object):
         self.options = parser.parse_args()
 
         pkg_spec = validate_pypi_opts(parser)
+        if not pkg_spec:
+            pkg_spec = self.options.arguments
         self.pkg_spec = pkg_spec
 
-        if not self.options.pypi_search and (len(sys.argv) == 1):
+        if (
+            not self.options.pypi_search and
+            (len(sys.argv) == 1 or len(self.options.arguments) > 2)
+        ):
             parser.print_help()
             return 2
 
@@ -909,6 +914,8 @@ def setup_parser():
     parser.add_argument('-q', '--quiet', action='store_true', dest=
                         'quiet', default=False,
                         help='show less output')
+
+    parser.add_argument('arguments', nargs='*', default=[])
 
     group_local = parser.add_argument_group(
         'Query installed Python packages',
