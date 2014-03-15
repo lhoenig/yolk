@@ -3,16 +3,9 @@ recursive-include docs *.py *.txt *.conf *.css *.css_t Makefile indexsidebar.htm
 include *.py
 include *.rst
 include MANIFEST.in
-include AUTHORS
 include COPYING
 include CREDITS
-include ChangeLog
-include FAQ
-include INSTALL
-include NEWS
 include README.rst
-include THANKS
-include TODO
 include setup.py
 include docs/tests.txt
 include docs/yolk-logo.png
