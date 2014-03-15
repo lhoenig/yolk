@@ -98,7 +98,7 @@ class Yolk(object):
         self.version = ''
         # List of all versions not hidden on PyPI
         self.all_versions = []
-        self.pkg_spec = []
+        self.pkg_spec = None
         self.options = None
 
         # Squelch output from setuptools
@@ -147,12 +147,12 @@ class Yolk(object):
 
         pkg_spec = validate_pypi_opts(parser)
         if not pkg_spec:
-            pkg_spec = self.options.arguments
+            pkg_spec = self.options.pkg_spec
         self.pkg_spec = pkg_spec
 
         if (
             not self.options.pypi_search and
-            (len(sys.argv) == 1 or len(self.options.arguments) > 2)
+            len(sys.argv) == 1
         ):
             parser.print_help()
             return 2
@@ -867,7 +867,7 @@ class Yolk(object):
         """
         all_versions = []
 
-        arg_str = ('').join(self.pkg_spec)
+        arg_str = self.pkg_spec
         if '==' not in arg_str:
             # No version specified
             project_name = arg_str
@@ -915,7 +915,7 @@ def setup_parser():
                         'quiet', default=False,
                         help='show less output')
 
-    parser.add_argument('arguments', nargs='*', default=[])
+    parser.add_argument('pkg_spec', nargs='?')
 
     group_local = parser.add_argument_group(
         'Query installed Python packages',
