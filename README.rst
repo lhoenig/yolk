@@ -94,12 +94,3 @@ Tips and Tricks
 * Upgrade all installed Python packages::
 
     $ pip install -U $(yolk -U | awk '{print $1}' | uniq)
-
-
-Requirements
-------------
-
-* setuptools (Distribute preferred)
-
-* elementtree (For RSS feed option extra_requires [RSS])
-  (included in Python >= 2.5)
