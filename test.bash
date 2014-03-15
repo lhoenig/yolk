@@ -5,6 +5,8 @@ python -m yolk --show-updates
 python -m yolk --pip-updates
 python -m yolk --query-metadata=yolk
 python -m yolk --depends=pip
+python -m yolk --list
+python -m yolk --list pip
 
 python -m yolk --depends=fake_foo 2>&1 | grep 'fake_foo is not installed'
 
