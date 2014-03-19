@@ -56,7 +56,10 @@ class ProxyTransport(xmlrpclib.Transport):
         self.verbose = verbose
         url = 'http://' + host + handler
         request = urllib2.Request(url)
-        request.add_data(request_body)
+        try:
+            request.add_data(request_body)
+        except AttributeError:
+            request.data = request_body
         # Note: 'Host' and 'Content-Length' are added automatically
         request.add_header('User-Agent', self.user_agent)
         request.add_header('Content-Type', 'text/xml')
