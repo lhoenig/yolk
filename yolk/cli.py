@@ -15,13 +15,14 @@ License : BSD (See COPYING)
 
 from __future__ import print_function
 
-import inspect
-import re
-import pprint
-import os
-import sys
 import argparse
+import inspect
+import os
 import pkg_resources
+import pprint
+import re
+import subprocess
+import sys
 import webbrowser
 
 try:
@@ -166,7 +167,7 @@ class Yolk(object):
             self.options.show_active or
             self.options.show_non_active or
             (self.options.show_updates and pkg_spec) or
-            self.options.pip_updates
+            self.options.pip
         ):
             want_installed = True
         else:
@@ -175,7 +176,7 @@ class Yolk(object):
         if (
             not want_installed or
             self.options.show_updates or
-            self.options.pip_updates
+            self.options.pip
         ):
             self.pypi = CheeseShop(self.options.debug)
             # XXX: We should return 2 here if we couldn't create xmlrpc server
@@ -192,7 +193,7 @@ class Yolk(object):
         # I could prefix all these with 'cmd_' and the methods also
         # and then iterate over the `options` dictionary keys...
         commands = ['show_deps', 'query_metadata_pypi', 'fetch',
-                    'versions_available', 'show_updates', 'pip_updates',
+                    'versions_available', 'show_updates', 'pip',
                     'browse_website',
                     'show_download_links', 'pypi_search',
                     'show_pypi_changelog', 'show_pypi_releases',
@@ -244,8 +245,8 @@ class Yolk(object):
 
         return 0
 
-    def pip_updates(self):
-        """Check installed packages for available updates on PyPI.
+    def pip(self):
+        """Check installed packages for available updates on PyPI and upgrade.
 
         @param project_name: optional package name to check; checks every
                              installed package if none specified
@@ -261,10 +262,13 @@ class Yolk(object):
             # Check for every installed package
             pkg_list = get_pkglist()
 
-        argument = ' '.join([values[0]
-                             for values in _updates(pkg_list, self.pypi)])
-        if argument:
-            print('pip install --upgrade ' + argument)
+        names = [values[0]
+                    for values in _updates(pkg_list, self.pypi)]
+        if names:
+            subprocess.call(
+                [sys.executable, '-m', 'pip', 'install', '--upgrade'] +
+                (['--user'] if self.options.user else []) +
+                names)
 
         return 0
 
@@ -1037,11 +1041,12 @@ def setup_parser():
                             default=False,
                             help='check PyPI for updates on package(s)')
 
-    group_pypi.add_argument('--pip-updates', action='store_true',
-                            dest='pip_updates',
-                            default=False,
-                            help='print pip command to upgrade outdated '
+    group_pypi.add_argument('--pip', action='store_true',
+                            help='run pip command to upgrade outdated '
                                  'packages')
+
+    group_pypi.add_argument('--user', action='store_true',
+                            help='run pip with --user')
 
     group_pypi.add_argument('-V', '--versions-available', action=
                             'store', dest='versions_available',
