@@ -263,7 +263,7 @@ class Yolk(object):
             pkg_list = get_pkglist()
 
         names = [values[0]
-                    for values in _updates(pkg_list, self.pypi)]
+                 for values in _updates(pkg_list, self.pypi)]
         if names:
             subprocess.call(
                 [sys.executable, '-m', 'pip', 'install', '--upgrade'] +
