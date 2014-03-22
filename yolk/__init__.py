@@ -6,4 +6,4 @@ License  : BSD
 
 """
 
-__version__ = '0.8a0'
+__version__ = '0.8'
