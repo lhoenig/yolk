@@ -167,7 +167,7 @@ class Yolk(object):
             self.options.show_active or
             self.options.show_non_active or
             (self.options.show_updates and pkg_spec) or
-            self.options.pip
+            self.options.upgrade
         ):
             want_installed = True
         else:
@@ -176,7 +176,7 @@ class Yolk(object):
         if (
             not want_installed or
             self.options.show_updates or
-            self.options.pip
+            self.options.upgrade
         ):
             self.pypi = CheeseShop(self.options.debug)
             # XXX: We should return 2 here if we couldn't create xmlrpc server
@@ -193,7 +193,7 @@ class Yolk(object):
         # I could prefix all these with 'cmd_' and the methods also
         # and then iterate over the `options` dictionary keys...
         commands = ['show_deps', 'query_metadata_pypi', 'fetch',
-                    'versions_available', 'show_updates', 'pip',
+                    'versions_available', 'show_updates', 'upgrade',
                     'browse_website',
                     'show_download_links', 'pypi_search',
                     'show_pypi_changelog', 'show_pypi_releases',
@@ -245,7 +245,7 @@ class Yolk(object):
 
         return 0
 
-    def pip(self):
+    def upgrade(self):
         """Check installed packages for available updates on PyPI and upgrade.
 
         @param project_name: optional package name to check; checks every
@@ -1041,7 +1041,7 @@ def setup_parser():
                             default=False,
                             help='check PyPI for updates on package(s)')
 
-    group_pypi.add_argument('--pip', action='store_true',
+    group_pypi.add_argument('--upgrade', '--pip', action='store_true',
                             help='run pip command to upgrade outdated '
                                  'packages')
 

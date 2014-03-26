@@ -93,4 +93,4 @@ Tips and Tricks
 
 * Upgrade all installed Python packages::
 
-    $ yolk --pip
+    $ yolk --upgrade
