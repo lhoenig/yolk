@@ -19,7 +19,10 @@ Summary
 -------
 
 Yolk is a Python tool for obtaining information about installed Python packages
-and querying packages available on PyPI (Python Package Index).
+and querying packages available on PyPI (Python Package Index). ``yolk3k``
+is a fork of the original ``yolk``. ``yolk3k`` add Python 3 support (while
+maintaining Python 2 support). It also adds additional features.
+
 
 You can see which packages are active, non-active or in development mode and
 show you which have newer versions available by querying PyPI.
