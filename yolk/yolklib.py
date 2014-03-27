@@ -54,7 +54,7 @@ class Distributions(object):
 
         """
         # pylint: disable-msg=W0612
-        #'name' is a placeholder for the sorted list
+        # "name" is a placeholder for the sorted list.
         for name, dist in self.get_alpha(show, pkg_name, version):
             ver = dist.version
             for package in self.environment[dist.project_name]:

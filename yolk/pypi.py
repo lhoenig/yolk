@@ -137,7 +137,7 @@ class CheeseShop(object):
 
     def query_versions_pypi(self, package_name):
         """Fetch list of available versions for a package from PyPI."""
-        if not package_name in self.pkg_list:
+        if package_name not in self.pkg_list:
             self.fetch_pkg_list()
         # I have to set version=[] for edge cases like "Magic file extensions"
         # but I'm not sure why this happens. It's included with Python or

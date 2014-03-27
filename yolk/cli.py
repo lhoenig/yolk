@@ -79,7 +79,7 @@ class StdOut(object):
             mod = frame.f_globals.get('__name__')
         else:
             mod = sys._getframe(0).f_globals.get('__name__')
-        if not mod in self.modulenames:
+        if mod not in self.modulenames:
             self.stdout.write(inline)
 
     def writelines(self, inline):
