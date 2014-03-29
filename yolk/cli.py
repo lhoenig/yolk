@@ -1043,10 +1043,10 @@ def setup_parser():
 
     group_pypi.add_argument('--upgrade', '--pip', action='store_true',
                             help='run pip command to upgrade outdated '
-                                 'packages')
+                                 'packages; may be used with --user')
 
     group_pypi.add_argument('--user', action='store_true',
-                            help='run pip with --user')
+                            help='run pip with --user; for use with --upgrade')
 
     group_pypi.add_argument('-V', '--versions-available', action=
                             'store', dest='versions_available',
