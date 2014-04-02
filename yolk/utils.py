@@ -48,7 +48,7 @@ def run_command(cmd, env=None, max_timeout=None):
                 return 1, 'Time exceeded'
 
     pipe.wait()
-    return pipe.returncode, pipe.communicate()[0].decode('utf-8')
+    return pipe.returncode, pipe.communicate()[0].decode()
 
 
 def command_successful(cmd):
