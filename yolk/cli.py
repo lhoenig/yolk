@@ -568,7 +568,7 @@ class Yolk(object):
             return self.fetch_uri(directory, uri)
         else:
             print('No {} URI found for package: {}'.format(
-                (self.options.file_type, self.project_name)))
+                self.options.file_type, self.project_name))
             return 1
 
     def fetch_uri(self, directory, uri):
