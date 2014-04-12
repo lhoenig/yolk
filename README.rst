@@ -1,7 +1,7 @@
 yolk
 ====
 
-.. image:: https://travis-ci.org/myint/yolk.png?branch=develop
+.. image:: https://travis-ci.org/myint/yolk.svg?branch=develop
     :target: https://travis-ci.org/myint/yolk
     :alt: Build status
 
