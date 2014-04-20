@@ -911,13 +911,11 @@ def setup_parser():
                         default=False,
                         help='show yolk version and exit')
 
-    parser.add_argument('--debug', action='store_true', dest=
-                        'debug', default=False,
-                        help='show debugging information')
+    parser.add_argument('--debug', action='store_true',
+                        default=False, help='show debugging information')
 
-    parser.add_argument('-q', '--quiet', action='store_true', dest=
-                        'quiet', default=False,
-                        help='show less output')
+    parser.add_argument('-q', '--quiet', action='store_true',
+                        default=False, help='show less output')
 
     parser.add_argument('pkg_spec', nargs='?')
 
@@ -931,8 +929,7 @@ def setup_parser():
         'be either a package name or package name and version e.g. Paste==0.9')
 
     group_local.add_argument(
-        '-l', '--list', action='store_true', dest=
-        'show_all', default=False,
+        '-l', '--list', action='store_true', dest='show_all', default=False,
         help='list all Python packages installed by distutils or setuptools. '
              'Use PKG_SPEC to narrow results')
 
@@ -949,19 +946,19 @@ def setup_parser():
              'setuptools. Use PKG_SPEC to narrow results')
 
     group_local.add_argument(
-        '-m', '--metadata', action='store_true', dest='metadata',
+        '-m', '--metadata', action='store_true',
         default=False,
         help='show all metadata for packages installed by '
              'setuptools (use with -l -a or -n)')
 
     group_local.add_argument(
-        '-f', '--fields', action='store', dest='fields', default=False,
+        '-f', '--fields', action='store', default=False,
         help='show specific metadata fields. '
              '(use with -m or -M)')
 
     group_local.add_argument(
-        '-d', '--depends', action='store', dest=
-        'show_deps', metavar='PKG_SPEC',
+        '-d', '--depends', action='store', dest='show_deps',
+        metavar='PKG_SPEC',
         help='show dependencies for a package installed by '
              'setuptools if they are available')
 
@@ -1009,7 +1006,6 @@ def setup_parser():
         help='launch web browser at home page for package')
 
     group_pypi.add_argument('-I', '--pypi-index', action='store',
-                            dest='pypi_index',
                             default=False,
                             help='specify PyPI mirror for package index')
 
@@ -1032,12 +1028,10 @@ def setup_parser():
         metavar='SEARCH_SPEC <AND/OR SEARCH_SPEC>')
 
     group_pypi.add_argument(
-        '-T', '--file-type', action='store', dest=
-        'file_type', default='all',
+        '-T', '--file-type', action='store', default='all',
         help="You may specify 'source', 'egg', 'svn' or 'all' when using -D.")
 
     group_pypi.add_argument('-U', '--show-updates', action='store_true',
-                            dest='show_updates',
                             default=False,
                             help='check PyPI for updates on package(s)')
 
@@ -1048,8 +1042,7 @@ def setup_parser():
     group_pypi.add_argument('--user', action='store_true',
                             help='run pip with --user; for use with --upgrade')
 
-    group_pypi.add_argument('-V', '--versions-available', action=
-                            'store', dest='versions_available',
+    group_pypi.add_argument('-V', '--versions-available', action='store',
                             default=False, metavar='PKG_SPEC',
                             help='show available versions for given package '
                                  'listed on PyPI')
