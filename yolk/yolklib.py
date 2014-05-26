@@ -28,6 +28,7 @@ def query_activated(dist):
     else:
         return False
 
+
 def get_distributions(show, pkg_name='', version=''):
     """Yield installed packages.
 
@@ -58,6 +59,7 @@ def get_distributions(show, pkg_name='', version=''):
                 elif show == 'all':
                     yield (dist, query_activated(dist))
 
+
 def get_alpha(show, pkg_name='', version=''):
     """Return list of alphabetized packages.
 
@@ -85,6 +87,7 @@ def get_alpha(show, pkg_name='', version=''):
     alpha_list.sort()
     return alpha_list
 
+
 def get_packages(show):
     """Return list of Distributions filtered by active status or all.
 
@@ -107,6 +110,7 @@ def get_packages(show):
         # Only activated packages.
         return pkg_resources.WorkingSet()
 
+
 def case_sensitive_name(package_name):
     """Return case-sensitive package name given any-case package name.
 
@@ -117,6 +121,7 @@ def case_sensitive_name(package_name):
     environment = pkg_resources.Environment()
     if len(environment[package_name]):
         return environment[package_name][0].project_name
+
 
 def get_highest_installed(project_name):
     """Return highest version of installed package.
