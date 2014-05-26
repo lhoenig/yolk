@@ -8,11 +8,11 @@ License  : BSD (See COPYING)
 
 """
 
-
-from yolk.yolklib import Distributions
+import pkg_resources
 
 from setuptools.package_index import PackageIndex
-import pkg_resources
+
+from yolk import yolklib
 
 
 class DownloadURI(Exception):
@@ -83,10 +83,8 @@ def get_pkglist():
     @returns: list of project name strings for every installed pkg
 
     """
-
-    dists = Distributions()
     projects = []
-    for (dist, _) in dists.get_distributions('all'):
+    for (dist, _) in yolklib.get_distributions('all'):
         if dist.project_name not in projects:
             projects.append(dist.project_name)
     return projects

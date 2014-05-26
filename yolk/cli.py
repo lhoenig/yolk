@@ -36,7 +36,7 @@ except ImportError:
 
 from distutils.sysconfig import get_python_lib
 from yolk.metadata import get_metadata
-from yolk.yolklib import get_highest_version, Distributions
+from yolk import yolklib
 from yolk.pypi import CheeseShop
 from yolk.setuptools_support import get_download_uri, get_pkglist
 from yolk.utils import run_command, command_successful
@@ -294,10 +294,10 @@ class Yolk(object):
         if workingenv:
             ignores.append(workingenv)
 
-        dists = Distributions()
         results = None
-        for (dist, active) in dists.get_distributions(show, self.project_name,
-                                                      self.version):
+        for (dist, active) in yolklib.get_distributions(show,
+                                                        self.project_name,
+                                                        self.version):
             metadata = get_metadata(dist)
             for prefix in ignores:
                 if dist.location.startswith(prefix):
@@ -882,8 +882,7 @@ class Yolk(object):
             version = version.strip()
         # Find proper case for package name
         if want_installed:
-            dists = Distributions()
-            project_name = dists.case_sensitive_name(project_name)
+            project_name = yolklib.case_sensitive_name(project_name)
         else:
             (project_name, all_versions) = self.pypi.query_versions_pypi(
                 project_name)
@@ -1082,14 +1081,12 @@ def validate_pypi_opts(parser):
 
 def _updates(names, pypi):
     """Return updates."""
-    dists = Distributions()
-
     from multiprocessing.pool import ThreadPool
 
     def worker_function(pkg):
-        for (dist, active) in dists.get_distributions(
+        for (dist, active) in yolklib.get_distributions(
                 'all', pkg,
-                dists.get_highest_installed(pkg)):
+                yolklib.get_highest_installed(pkg)):
 
             (project_name, versions) = pypi.query_versions_pypi(
                 dist.project_name)
@@ -1105,7 +1102,7 @@ def _updates(names, pypi):
             # but who knows if its guaranteed in the API?
             # Make sure we grab the highest version:
 
-            newest = get_highest_version(versions)
+            newest = yolklib.get_highest_version(versions)
             if newest != dist.version:
                 # We may have newer than what PyPI knows about.
                 if (
