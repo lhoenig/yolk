@@ -239,9 +239,9 @@ class Yolk(object):
             pkg_list = get_pkglist()
 
         for (project_name, version, newest) in _updates(pkg_list, self.pypi):
-            print(' {} {} ({})'.format(project_name,
-                                       version,
-                                       newest))
+            print('{} {} ({})'.format(project_name,
+                                      version,
+                                      newest))
 
         return 0
 
