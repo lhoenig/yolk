@@ -232,10 +232,8 @@ class Yolk(object):
 
         """
         if self.project_name:
-            # Check for a single package
             pkg_list = [self.project_name]
         else:
-            # Check for every installed package
             pkg_list = get_pkglist()
 
         for (project_name, version, newest) in _updates(pkg_list, self.pypi):
@@ -256,10 +254,8 @@ class Yolk(object):
 
         """
         if self.project_name:
-            # Check for a single package
             pkg_list = [self.project_name]
         else:
-            # Check for every installed package
             pkg_list = get_pkglist()
 
         names = [values[0]
@@ -282,14 +278,13 @@ class Yolk(object):
 
         """
         # Search for any plugins with active CLI options with add_column()
-        # method
+        # method.
         plugins = self.get_plugin('add_column')
 
         # Some locations show false positive for 'development' packages:
         ignores = ['/UNIONFS', '/KNOPPIX.IMG']
 
-        # Check if we're in a workingenv
-        # See http://cheeseshop.python.org/pypi/workingenv.py
+        # See http://cheeseshop.python.org/pypi/workingenv.py for details.
         workingenv = os.environ.get('WORKING_ENV')
         if workingenv:
             ignores.append(workingenv)
@@ -385,18 +380,17 @@ class Yolk(object):
                 '{} ({}){} {}'.format(metadata['Name'], version, active_status,
                                       development_status))
         else:
-            # Need intelligent justification
+            # Need intelligent justification.
             print(metadata['Name'].ljust(15) + ' - ' + version.ljust(12) +
                   ' - ' + status)
         if fields:
-            # Only show specific fields, using case-insensitive search
+            # Only show specific fields, using case-insensitive search.
             fields = [s.lower() for s in fields]
             for field in metadata.keys():
                 if field.lower() in fields:
                     print('    {}: {}'.format(field, metadata[field]))
             print()
         elif show_metadata:
-            # Print all available metadata fields
             for field in metadata.keys():
                 if field != 'Name' and field != 'Summary':
                     print('    {}: {}'.format(field, metadata[field]))
@@ -503,7 +497,7 @@ class Yolk(object):
             else:
                 version = self.all_versions[0]
         if self.options.file_type == 'all':
-            # Search for source, egg, and svn
+            # Search for source, egg, and svn.
             self.print_download_uri(version, True)
             self.print_download_uri(version, False)
             self.print_download_uri('dev', True)
@@ -530,7 +524,7 @@ class Yolk(object):
         if version == 'dev':
             source = True
 
-        # Use setuptools monkey-patch to grab url
+        # Use setuptools monkey-patch to grab url.
         url = get_download_uri(self.project_name, version, source,
                                self.options.pypi_index)
         if url:
@@ -542,7 +536,6 @@ class Yolk(object):
         @returns: 0 = success or 1 if failed download
 
         """
-        # Default type to download
         source = True
         directory = '.'
 
@@ -873,14 +866,14 @@ class Yolk(object):
 
         arg_str = self.pkg_spec
         if '==' not in arg_str:
-            # No version specified
+            # No version specified.
             project_name = arg_str
             version = None
         else:
             (project_name, version) = arg_str.split('==')
             project_name = project_name.strip()
             version = version.strip()
-        # Find proper case for package name
+        # Find proper case for package name.
         if want_installed:
             project_name = yolklib.case_sensitive_name(project_name)
         else:
@@ -901,9 +894,6 @@ def setup_parser():
     @returns: parser.ArgumentParser
 
     """
-    # pylint: disable-msg=C0301
-    # line too long
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--version', action='store_true', dest='yolk_version',

@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-# pylint: disable-msg=W0231,R0904
-
-
 """setuptools_support.
 
 License  : BSD (See COPYING)
