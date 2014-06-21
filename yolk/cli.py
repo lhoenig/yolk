@@ -1095,7 +1095,7 @@ def _updates(names, pypi, user_installs_only):
                                                         names):
         if (
             user_installs_only and
-            not dist.location.startswith(site.getusersitepackages())
+            not dist.location.startswith(site.getuserbase())
         ):
             continue
 
