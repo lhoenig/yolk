@@ -1093,11 +1093,15 @@ def _updates(names, pypi, user_installs_only):
 
     for (pkg, dist, project_name, versions) in pool.map(worker_function,
                                                         names):
-        if (
-            user_installs_only and
-            not dist.location.startswith(site.getuserbase())
-        ):
-            continue
+        try:
+            if (
+                user_installs_only and
+                not dist.location.startswith(site.getusersitepackages())
+            ):
+                continue
+        except AttributeError:
+            # Probably inside a virtualenv.
+            pass
 
         if versions:
             # PyPI returns them in chronological order,
