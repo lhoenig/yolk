@@ -2,6 +2,7 @@
 
 python -m yolk --latest-releases=1
 python -m yolk --show-updates
+python -m yolk --show-updates --user
 python -m yolk --query-metadata=yolk
 python -m yolk --depends=pip
 python -m yolk --list

@@ -21,6 +21,7 @@ import os
 import pkg_resources
 import pprint
 import re
+import site
 import subprocess
 import sys
 import webbrowser
@@ -236,7 +237,10 @@ class Yolk(object):
         else:
             pkg_list = get_pkglist()
 
-        for (project_name, version, newest) in _updates(pkg_list, self.pypi):
+        for (project_name, version, newest) in _updates(
+                pkg_list,
+                self.pypi,
+                user_installs_only=self.options.user):
             print('{} {} ({})'.format(project_name,
                                       version,
                                       newest))
@@ -259,7 +263,9 @@ class Yolk(object):
             pkg_list = get_pkglist()
 
         names = [values[0]
-                 for values in _updates(pkg_list, self.pypi)]
+                 for values in _updates(pkg_list,
+                                        self.pypi,
+                                        user_installs_only=self.options.user)]
         if names:
             subprocess.call(
                 [sys.executable, '-m', 'pip', 'install', '--upgrade'] +
@@ -1069,7 +1075,7 @@ def validate_pypi_opts(parser):
             return pkg_spec
 
 
-def _updates(names, pypi):
+def _updates(names, pypi, user_installs_only):
     """Return updates."""
     from multiprocessing.pool import ThreadPool
 
@@ -1087,6 +1093,12 @@ def _updates(names, pypi):
 
     for (pkg, dist, project_name, versions) in pool.map(worker_function,
                                                         names):
+        if (
+            user_installs_only and
+            not dist.location.startswith(site.getusersitepackages())
+        ):
+            continue
+
         if versions:
             # PyPI returns them in chronological order,
             # but who knows if its guaranteed in the API?
