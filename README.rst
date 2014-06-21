@@ -30,6 +30,12 @@ show you which have newer versions available by querying PyPI.
 
 Usage Examples::
 
+    $ yolk --upgrade
+        Upgrade all packages
+
+    $ yolk --upgrade --user
+        Upgrade user packages
+
     $ yolk -l
         List all installed Python packages
 
@@ -88,13 +94,3 @@ These options query PyPI::
 
     $ yolk -H twisted
         Launches your web browser at Twisted's home page
-
-
-Tips and Tricks
----------------
-
-* Use yolk inside your virtualenv to see which packages are installed.
-
-* Upgrade all installed Python packages::
-
-    $ yolk --upgrade
