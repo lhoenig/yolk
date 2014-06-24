@@ -24,15 +24,15 @@ def get_metadata(dist):
 
     """
     if dist.has_metadata('PKG-INFO'):
-        metadata = dist.get_metadata('PKG-INFO')
+        text = dist.get_metadata('PKG-INFO')
     elif dist.has_metadata('METADATA'):
-        metadata = dist.get_metadata('METADATA')
+        text = dist.get_metadata('METADATA')
     else:
-        return
+        return {}
 
     try:
         metadata = {}
-        msg = email.message_from_string(metadata)
+        msg = email.message_from_string(text)
         for header in [l for l in msg._headers]:
             metadata[header[0]] = header[1]
     except IOError:
