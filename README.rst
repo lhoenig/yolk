@@ -101,6 +101,6 @@ Useful tips
 
 Check invalid reStructuredText in descriptions on PyPI (using `rstcheck`_)::
 
-    $ python -m yolk --query-metadata=pip --fields=description | rstcheck -
+    $ yolk --query-metadata=pip --fields=description | rstcheck -
 
 .. _rstcheck: https://github.com/myint/rstcheck
