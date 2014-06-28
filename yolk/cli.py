@@ -44,6 +44,11 @@ from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
 
 
+class YolkException(Exception):
+
+    """Exception for communicating top-level error to user."""
+
+
 class StdOut(object):
 
     """Filter stdout or stderr from specific modules So far this is just used
@@ -619,24 +624,19 @@ class Yolk(object):
         @returns: 0 = success or 1 for failed download
 
         """
-        if not command_successful('svn --version'):
-            print('Do you have subversion installed?', file=sys.stderr)
-            return 1
+        if not command_successful(['svn', '--version']):
+            raise YolkException('Do you have subversion installed?')
         if os.path.exists(directory):
-            print(
-                'Checkout directory exists - {}'.format(directory),
-                file=sys.stderr)
-            return 1
+            raise YolkException(
+                'Checkout directory exists - {}'.format(directory))
         try:
             os.mkdir(directory)
         except OSError as err_msg:
-            print('' + str(err_msg), file=sys.stderr)
-            return 1
+            raise YolkException('' + str(err_msg))
         cwd = os.path.realpath(os.curdir)
         os.chdir(directory)
-        status, _ = run_command('/usr/bin/svn co {}'.format(svn_uri))
+        status, _ = run_command(['svn', 'checkout', svn_uri])
         os.chdir(cwd)
-        return 0
 
     def browse_website(self, browser=None):
         """Launch web browser at project's homepage.
@@ -1129,5 +1129,11 @@ def _updates(names, pypi, user_installs_only):
 
 def main():
     """Let's do it."""
-    my_yolk = Yolk()
-    my_yolk.run()
+    try:
+        my_yolk = Yolk()
+        my_yolk.run()
+    except YolkException as exception:
+        print(exception, file=sys.stderr)
+        return 1
+    except KeyboardInterrupt:
+        return 1

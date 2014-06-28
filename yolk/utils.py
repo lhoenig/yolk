@@ -5,7 +5,6 @@ run_command borrowed from Cheesecake - See CREDITS.
 """
 
 import os
-import shlex
 import signal
 import subprocess
 import time
@@ -16,21 +15,21 @@ def get_yolk_dir():
     return os.path.abspath('%s/.yolk' % os.path.expanduser('~'))
 
 
-def run_command(cmd, env=None, max_timeout=None):
+def run_command(args, env=None, max_timeout=None):
     r"""Run command and return its return status code and its output.
 
-    >>> run_command('true')
+    >>> run_command(['true'])
     (0, '')
 
-    >>> run_command('false')
+    >>> run_command(['false'])
     (1, '')
 
-    >>> run_command('echo hello world')
+    >>> run_command(['echo', 'hello world'])
     (0, 'hello world\n')
 
     """
     try:
-        pipe = subprocess.Popen(shlex.split(cmd),
+        pipe = subprocess.Popen(args,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 env=env)
@@ -51,7 +50,7 @@ def run_command(cmd, env=None, max_timeout=None):
     return pipe.returncode, pipe.communicate()[0].decode()
 
 
-def command_successful(cmd):
+def command_successful(args):
     """Returns True if command exited normally, False otherwise."""
-    return_code, _ = run_command(cmd)
+    return_code, _ = run_command(args)
     return return_code == 0

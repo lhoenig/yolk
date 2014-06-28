@@ -5,4 +5,5 @@ include README.rst
 include setup.py
 exclude .travis.yml
 exclude Makefile
+exclude check_readme.bash
 exclude test.bash
