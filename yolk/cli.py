@@ -152,6 +152,12 @@ class Yolk(object):
             pkg_spec = self.options.pkg_spec
         self.pkg_spec = pkg_spec
 
+        if self.options.fields:
+            self.options.fields = [s.strip().lower()
+                                   for s in self.options.fields.split(',')]
+        else:
+            self.options.fields = []
+
         if (
             not self.options.pypi_search and
             len(sys.argv) == 1
@@ -356,32 +362,28 @@ class Yolk(object):
 
         """
         show_metadata = self.options.metadata
-        if self.options.fields:
-            fields = [s.strip() for s in self.options.fields.split(',')]
-        else:
-            fields = []
         version = metadata['Version']
 
         # When showing all packages, note which are not active:
         if active:
-            if fields:
+            if self.options.fields:
                 active_status = ''
             else:
                 active_status = 'active'
         else:
-            if fields:
+            if self.options.fields:
                 active_status = '*'
             else:
                 active_status = 'non-active'
         if develop:
-            if fields:
+            if self.options.fields:
                 development_status = '! ({})'.format(develop)
             else:
                 development_status = 'development ({})'.format(develop)
         else:
             development_status = installed_by
         status = '{} {}'.format(active_status, development_status)
-        if fields:
+        if self.options.fields:
             print(
                 '{} ({}){} {}'.format(metadata['Name'], version, active_status,
                                       development_status))
@@ -389,11 +391,9 @@ class Yolk(object):
             # Need intelligent justification.
             print(metadata['Name'].ljust(15) + ' - ' + version.ljust(12) +
                   ' - ' + status)
-        if fields:
-            # Only show specific fields, using case-insensitive search.
-            fields = [s.lower() for s in fields]
+        if self.options.fields:
             for field in metadata.keys():
-                if field.lower() in fields:
+                if field.lower() in self.options.fields:
                     print('    {}: {}'.format(field, metadata[field]))
             print()
         elif show_metadata:
@@ -677,7 +677,7 @@ class Yolk(object):
         if metadata:
             for key in metadata.keys():
                 if not self.options.fields or (self.options.fields and
-                                               self.options.fields == key):
+                                               key in self.options.fields):
                     print('{}: {}'.format(key, metadata[key]))
         return 0
 
@@ -948,8 +948,8 @@ def setup_parser():
 
     group_local.add_argument(
         '-f', '--fields', action='store', default=False,
-        help='show specific metadata fields. '
-             '(use with -m or -M)')
+        help='show specific metadata (comma-separated) fields; '
+             'use with -m or -M')
 
     group_local.add_argument(
         '-d', '--depends', action='store', dest='show_deps',

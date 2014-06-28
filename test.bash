@@ -4,10 +4,14 @@ python -m yolk --latest-releases=1
 python -m yolk --show-updates
 python -m yolk --show-updates --user
 python -m yolk --query-metadata=pip | grep -i 'license:'
+python -m yolk --query-metadata=pip --fields=author | grep -i 'author:'
+python -m yolk --query-metadata=pip --fields=author | grep -iv 'license:'
 python -m yolk --depends=pip
 python -m yolk --list
 python -m yolk --list pip
 python -m yolk --list --metadata pip | grep -i 'license:'
+python -m yolk --list --metadata --fields author,license | grep -i 'author:'
+python -m yolk --list --metadata --fields author,license | grep -i 'license:'
 
 python -m yolk --depends=fake_foo 2>&1 | grep 'fake_foo is not installed'
 
