@@ -675,13 +675,19 @@ class Yolk(object):
                                               self.all_versions[0])
 
         if metadata:
-            for key in metadata.keys():
-                if (
-                    not self.options.fields or
-                    (self.options.fields and
-                     key.lower() in self.options.fields)
-                ):
-                    print('{}: {}'.format(key, metadata[key]))
+            if len(self.options.fields) == 1:
+                try:
+                    print(metadata[self.options.fields[0]])
+                except KeyError:
+                    pass
+            else:
+                for key in metadata.keys():
+                    if (
+                        not self.options.fields or
+                        (self.options.fields and
+                         key.lower() in self.options.fields)
+                    ):
+                        print('{}: {}'.format(key, metadata[key]))
         return 0
 
     def versions_available(self):

@@ -94,3 +94,13 @@ These options query PyPI::
 
     $ yolk -H twisted
         Launches your web browser at Twisted's home page
+
+
+Useful tips
+-----------
+
+Check invalid reStructuredText in descriptions on PyPI (using `rstcheck`_)::
+
+    $ python -m yolk --query-metadata=pip --fields=description | rstcheck -
+
+.. _rstcheck: https://github.com/myint/rstcheck

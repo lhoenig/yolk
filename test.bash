@@ -3,6 +3,10 @@
 python -m yolk --query-metadata=pip | grep -i 'license:'
 python -m yolk --query-metadata=pip --fields=author,name | grep -i 'author:'
 python -m yolk --query-metadata=pip --fields=author,name | grep -iv 'license:'
+
+# Do not print field name if there is only one.
+python -m yolk --query-metadata=pip --fields=author | grep -iv 'author:'
+
 python -m yolk --depends=pip
 python -m yolk --list
 python -m yolk --list pip
