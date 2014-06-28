@@ -1129,9 +1129,7 @@ def main():
     """Let's do it."""
     try:
         my_yolk = Yolk()
-        result = my_yolk.run()
-        if result not in [None, 0]:
-            return 1
+        my_yolk.run()
     except YolkException as exception:
         print(exception, file=sys.stderr)
         return 1
