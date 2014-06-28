@@ -621,8 +621,6 @@ class Yolk(object):
         @param directory: directory to download to
         @type directory: string
 
-        @returns: 0 = success or 1 for failed download
-
         """
         if not command_successful(['svn', '--version']):
             raise YolkException('Do you have subversion installed?')
