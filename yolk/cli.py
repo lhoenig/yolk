@@ -676,8 +676,11 @@ class Yolk(object):
 
         if metadata:
             for key in metadata.keys():
-                if not self.options.fields or (self.options.fields and
-                                               key in self.options.fields):
+                if (
+                    not self.options.fields or
+                    (self.options.fields and
+                     key.lower() in self.options.fields)
+                ):
                     print('{}: {}'.format(key, metadata[key]))
         return 0
 
