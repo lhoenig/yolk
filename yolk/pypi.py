@@ -66,7 +66,7 @@ class ProxyTransport(xmlrpclib.Transport):
         proxy_handler = urllib2.ProxyHandler()
         opener = urllib2.build_opener(proxy_handler)
         fhandle = opener.open(request)
-        return(self.parse_response(fhandle))
+        return self.parse_response(fhandle)
 
 
 def check_proxy_setting():

@@ -26,14 +26,16 @@ import subprocess
 import sys
 import webbrowser
 
-try:
-    from xmlrpclib import Fault as XMLRPCFault
+if sys.version_info[0] == 2:
+    from httplib import HTTPException
     from urllib import urlretrieve
     from urlparse import urlparse
-except ImportError:
-    from xmlrpc.client import Fault as XMLRPCFault
+    from xmlrpclib import Fault as XMLRPCFault
+else:
+    from http.client import HTTPException
     from urllib.request import urlretrieve
     from urllib.parse import urlparse
+    from xmlrpc.client import Fault as XMLRPCFault
 
 from distutils.sysconfig import get_python_lib
 from yolk.metadata import get_metadata
@@ -1130,7 +1132,7 @@ def main():
     try:
         my_yolk = Yolk()
         my_yolk.run()
-    except YolkException as exception:
+    except (HTTPException, YolkException) as exception:
         print(exception, file=sys.stderr)
         return 1
     except KeyboardInterrupt:
