@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+trap "echo -e '\x1b[01;31mFailed\x1b[0m'" ERR
+
 python -m yolk --query-metadata=pip | grep -i 'license:'
 python -m yolk --query-metadata=pip --fields=author,name | grep -i 'author:'
 python -m yolk --query-metadata=pip --fields=author,name | grep -iv 'license:'
@@ -25,4 +27,4 @@ then
     python -m doctest yolk/utils.py
 fi
 
-echo -e '\x1b[01;32mOK\x1b[0m'
+echo -e '\x1b[01;32mOkay\x1b[0m'
