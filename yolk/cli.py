@@ -1089,16 +1089,15 @@ def _updates(names, pypi, user_installs_only):
     """Return updates."""
     from multiprocessing.pool import ThreadPool
 
+    width = terminal_width()
+
     def worker_function(pkg):
         for (dist, active) in yolklib.get_distributions(
                 'all', pkg,
                 yolklib.get_highest_installed(pkg)):
 
-            print(
-                '\rChecking {}'.format(dist.project_name).ljust(
-                    terminal_width()),
-                end='',
-                file=sys.stderr)
+            print('\rChecking {}'.format(dist.project_name).ljust(width),
+                  end='', file=sys.stderr)
 
             (project_name, versions) = pypi.query_versions_pypi(
                 dist.project_name)
