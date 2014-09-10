@@ -1089,15 +1089,16 @@ def _updates(names, pypi, user_installs_only):
     """Return updates."""
     from multiprocessing.pool import ThreadPool
 
-    width = terminal_width()
-
     def worker_function(pkg):
         for (dist, active) in yolklib.get_distributions(
                 'all', pkg,
                 yolklib.get_highest_installed(pkg)):
 
-            print('\rChecking {}'.format(dist.project_name).ljust(width),
-                  end='', file=sys.stderr)
+            width = terminal_width()
+            if width:
+                print('\rChecking {}'.format(dist.project_name).ljust(width),
+                      end='',
+                      file=sys.stderr)
 
             (project_name, versions) = pypi.query_versions_pypi(
                 dist.project_name)
@@ -1145,8 +1146,10 @@ def terminal_width():
             fcntl.ioctl(0,
                         termios.TIOCGWINSZ,
                         struct.pack('HHHH', 0, 0, 0, 0)))[1]
-    except ImportError:
-        return 80
+    except (ImportError, OSError):
+        # ImportError for non-Unix.
+        # OSError for non-TTYs.
+        return None
 
 
 def main():
