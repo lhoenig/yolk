@@ -1143,7 +1143,7 @@ def terminal_width():
         import termios
         return struct.unpack(
             'HHHH',
-            fcntl.ioctl(0,
+            fcntl.ioctl(sys.stderr.fileno(),
                         termios.TIOCGWINSZ,
                         struct.pack('HHHH', 0, 0, 0, 0)))[1]
     except (ImportError, OSError):
