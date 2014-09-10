@@ -22,6 +22,7 @@ import pkg_resources
 import pprint
 import re
 import site
+import struct
 import subprocess
 import sys
 import webbrowser
@@ -1093,6 +1094,12 @@ def _updates(names, pypi, user_installs_only):
                 'all', pkg,
                 yolklib.get_highest_installed(pkg)):
 
+            print(
+                '\rChecking {}'.format(dist.project_name).ljust(
+                    terminal_width()),
+                end='',
+                file=sys.stderr)
+
             (project_name, versions) = pypi.query_versions_pypi(
                 dist.project_name)
         return (pkg, dist, project_name, versions)
@@ -1100,8 +1107,11 @@ def _updates(names, pypi, user_installs_only):
     import multiprocessing
     pool = ThreadPool(multiprocessing.cpu_count())
 
-    for (pkg, dist, project_name, versions) in pool.map(worker_function,
-                                                        names):
+    results = pool.map(worker_function, names)
+
+    print('\r', end='', file=sys.stderr)
+
+    for (pkg, dist, project_name, versions) in results:
         try:
             if (
                 user_installs_only and
@@ -1125,6 +1135,19 @@ def _updates(names, pypi, user_installs_only):
                     pkg_resources.parse_version(newest)
                 ):
                     yield (project_name, dist.version, newest)
+
+
+def terminal_width():
+    try:
+        import fcntl
+        import termios
+        return struct.unpack(
+            'HHHH',
+            fcntl.ioctl(0,
+                        termios.TIOCGWINSZ,
+                        struct.pack('HHHH', 0, 0, 0, 0)))[1]
+    except ImportError:
+        return 80
 
 
 def main():
