@@ -1089,10 +1089,15 @@ def _updates(names, pypi, user_installs_only):
     """Return updates."""
     from multiprocessing.pool import ThreadPool
 
+    exception = None
+
     def worker_function(pkg):
         for (dist, active) in yolklib.get_distributions(
                 'all', pkg,
                 yolklib.get_highest_installed(pkg)):
+
+            if exception:
+                return
 
             width = terminal_width()
             if width:
@@ -1107,9 +1112,15 @@ def _updates(names, pypi, user_installs_only):
     import multiprocessing
     pool = ThreadPool(multiprocessing.cpu_count())
 
-    results = pool.map(worker_function, names)
+    try:
+        results = pool.map(worker_function, names)
+    except IOError as _exception:
+        exception = _exception
 
     print('\r', end='', file=sys.stderr)
+
+    if exception:
+        raise YolkException(exception)
 
     for (pkg, dist, project_name, versions) in results:
         try:
@@ -1157,7 +1168,7 @@ def main():
     try:
         my_yolk = Yolk()
         my_yolk.run()
-    except (HTTPException, YolkException) as exception:
+    except (HTTPException, IOError, YolkException) as exception:
         print(exception, file=sys.stderr)
         return 1
     except KeyboardInterrupt:
