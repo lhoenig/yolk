@@ -83,7 +83,7 @@ These options query PyPI::
         Show all the metadata for Paste version 1.0
 
     $ yolk -M Paste
-        Show all the metadata for the latest version of Paste listed on PyPi
+        Show all the metadata for the latest version of Paste listed on PyPI
 
     $ yolk -D cheesecake
         Show all (source, egg, svn) URL's for the latest version of cheesecake
