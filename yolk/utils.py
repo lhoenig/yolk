@@ -51,6 +51,6 @@ def run_command(args, env=None, max_timeout=None):
 
 
 def command_successful(args):
-    """Returns True if command exited normally, False otherwise."""
+    """Return True if command exited normally, False otherwise."""
     return_code, _ = run_command(args)
     return return_code == 0

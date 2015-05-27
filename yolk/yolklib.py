@@ -137,7 +137,7 @@ def get_highest_installed(project_name):
 
 
 def get_highest_version(versions):
-    """Returns highest available version for a package in a list of versions.
+    """Return highest available version for a package in a list of versions.
 
     Uses pkg_resources to parse the versions.
 

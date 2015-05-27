@@ -122,7 +122,7 @@ class CheeseShop(object):
             self.fetch_pkg_list(True)
 
     def get_xmlrpc_server(self):
-        """Returns PyPI's XML-RPC server instance."""
+        """Return PyPI's XML-RPC server instance."""
         check_proxy_setting()
         if 'XMLRPC_DEBUG' in os.environ:
             debug = 1
@@ -132,7 +132,7 @@ class CheeseShop(object):
                                 verbose=debug)
 
     def get_pkg_cache_file(self):
-        """Returns filename of pkg cache."""
+        """Return filename of pkg cache."""
         return os.path.abspath('%s/pkg_list.py' % self.yolk_dir)
 
     def query_versions_pypi(self, package_name):
