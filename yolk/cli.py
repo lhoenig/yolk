@@ -201,7 +201,7 @@ class Yolk(object):
              self.version,
              self.all_versions) = self.parse_pkg_ver(want_installed)
             if want_installed and not self.project_name:
-                print('{} is not installed'.format(pkg_spec),
+                print(u'{} is not installed'.format(pkg_spec),
                       file=sys.stderr)
                 return 1
 
@@ -255,9 +255,9 @@ class Yolk(object):
                 pkg_list,
                 self.pypi,
                 user_installs_only=self.options.user):
-            print('{} {} ({})'.format(project_name,
-                                      version,
-                                      newest))
+            print(u'{} {} ({})'.format(project_name,
+                                       version,
+                                       newest))
 
         return 0
 
@@ -338,11 +338,12 @@ class Yolk(object):
             else:
                 pkg_spec = self.project_name
             if show == 'all':
-                print('There are no versions of {} installed'.format(pkg_spec),
-                      file=sys.stderr)
+                print(
+                    u'There are no versions of {} installed'.format(pkg_spec),
+                    file=sys.stderr)
             else:
                 print(
-                    'There are no {} versions of {} installed'.format(
+                    u'There are no {} versions of {} installed'.format(
                         show, pkg_spec),
                     file=sys.stderr)
             return 2
@@ -402,12 +403,12 @@ class Yolk(object):
         if self.options.fields:
             for field in metadata.keys():
                 if field.lower() in self.options.fields:
-                    print('    {}: {}'.format(field, metadata[field]))
+                    print(u'    {}: {}'.format(field, metadata[field]))
             print()
         elif show_metadata:
             for field in metadata.keys():
                 if field != 'Name' and field != 'Summary':
-                    print('    {}: {}'.format(field, metadata[field]))
+                    print(u'    {}: {}'.format(field, metadata[field]))
 
     def show_deps(self):
         """Show dependencies for package(s)
@@ -433,7 +434,7 @@ class Yolk(object):
                         if self.version and i == len(list(
                                 pkg._dep_map.values())[0]):
                             print(pkg.project_name, pkg.version)
-                        print('  ' + str(list(
+                        print(u'  ' + str(list(
                             pkg._dep_map.values())[0][i - 1]))
                     i -= 1
             else:
@@ -463,10 +464,10 @@ class Yolk(object):
         for entry in changelog:
             pkg = entry[0]
             if pkg != last_pkg:
-                print('{} {}\n\t{}'.format(entry[0], entry[1], entry[3]))
+                print(u'{} {}\n\t{}'.format(entry[0], entry[1], entry[3]))
                 last_pkg = pkg
             else:
-                print('\t{}'.format(entry[3]))
+                print(u'\t{}'.format(entry[3]))
 
         return 0
 
@@ -489,7 +490,7 @@ class Yolk(object):
             return 1
 
         for release in latest_releases:
-            print('{} {}'.format(release[0], release[1]))
+            print(u'{} {}'.format(release[0], release[1]))
         return 0
 
     def show_download_links(self):
@@ -542,7 +543,7 @@ class Yolk(object):
         url = get_download_uri(self.project_name, version, source,
                                self.options.pypi_index)
         if url:
-            print('{}'.format(url))
+            print(u'{}'.format(url))
 
     def fetch(self):
         """Download a package.
@@ -574,7 +575,7 @@ class Yolk(object):
         if uri:
             return self.fetch_uri(directory, uri)
         else:
-            print('No {} URI found for package: {}'.format(
+            print(u'No {} URI found for package: {}'.format(
                 self.options.file_type, self.project_name))
             return 1
 
@@ -593,7 +594,7 @@ class Yolk(object):
         """
         filename = os.path.basename(urlparse(uri)[2])
         if os.path.exists(filename):
-            print('File exists: ' + filename, file=sys.stderr)
+            print(u'File exists: ' + filename, file=sys.stderr)
             return 1
 
         try:
@@ -850,7 +851,7 @@ class Yolk(object):
             try:
                 plugin = entry_point.load()
                 print(plugin.__module__)
-                print('   {}'.format(entry_point))
+                print(u'   {}'.format(entry_point))
                 if plugin.__doc__:
                     print(plugin.__doc__)
                 print()
@@ -866,7 +867,7 @@ class Yolk(object):
 
     def yolk_version(self):
         """Show yolk's version."""
-        print('yolk {}'.format(VERSION))
+        print(u'yolk {}'.format(VERSION))
 
     def parse_pkg_ver(self, want_installed):
         """Return tuple with project_name and version from CLI args If the user
@@ -1062,7 +1063,7 @@ def print_pkg_versions(project_name, versions):
 
     """
     for ver in versions:
-        print('{} {}'.format(project_name, ver))
+        print(u'{} {}'.format(project_name, ver))
 
 
 def validate_pypi_opts(parser):
@@ -1101,7 +1102,7 @@ def _updates(names, pypi, user_installs_only):
 
             width = terminal_width()
             if width:
-                print('\rChecking {}'.format(dist.project_name).ljust(width),
+                print(u'\rChecking {}'.format(dist.project_name).ljust(width),
                       end='',
                       file=sys.stderr)
 
