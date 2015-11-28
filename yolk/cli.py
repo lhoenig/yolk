@@ -688,7 +688,7 @@ class Yolk(object):
                         (self.options.fields and
                          key.lower() in self.options.fields)
                     ):
-                        print('{}: {}'.format(key, metadata[key]))
+                        print(u'{}: {}'.format(key, metadata[key]))
         return 0
 
     def versions_available(self):
