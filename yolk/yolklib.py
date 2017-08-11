@@ -49,7 +49,7 @@ def get_distributions(show, pkg_name='', version=''):
     working_set = pkg_resources.WorkingSet()
     # "name" is a placeholder for the sorted list.
     for name, dist in get_alpha(show, pkg_name, version):
-        ver = dist.version
+        ver = safe_get_version(dist)
         for package in environment[dist.project_name]:
             if ver == package.version:
                 if show == 'nonactive' and dist not in working_set:
@@ -74,16 +74,17 @@ def get_alpha(show, pkg_name='', version=''):
               The string is the project name + version.
 
     """
+    
     alpha_list = []
     for dist in get_packages(show):
         if pkg_name and dist.project_name != pkg_name:
             # Only checking for a single package name
             pass
-        elif version and dist.version != version:
+        elif version and safe_get_version(dist) != version:
             # Only checking for a single version of a package
             pass
         else:
-            alpha_list.append((dist.project_name + dist.version, dist))
+            alpha_list.append((dist.project_name + safe_get_version(dist), dist))
     alpha_list.sort()
     return alpha_list
 
@@ -153,3 +154,19 @@ def get_highest_version(versions):
 
     sorted_versions = list(reversed(sorted(sorted_versions)))
     return sorted_versions[0][1]
+
+
+def safe_get_version(dist):
+    
+    """Get the distribution version, and returns an empty string when this
+    results in a ValueError. This is necessary to avoid crashes when PKG_INFO
+    is missing.
+    
+    @return: a version string
+    
+    """
+    
+    try:
+        return dist.version
+    except ValueError:
+        return ''
