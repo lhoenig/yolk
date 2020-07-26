@@ -38,13 +38,13 @@ else:
     from urllib.parse import urlparse
     from xmlrpc.client import Fault as XMLRPCFault
 
-from distutils.sysconfig import get_python_lib
 from yolk.metadata import get_metadata
 from yolk import yolklib
 from yolk.pypi import CheeseShop
 from yolk.setuptools_support import get_download_uri, get_pkglist
 from yolk.utils import run_command, command_successful
 from yolk.__init__ import __version__ as VERSION
+from distutils.sysconfig import get_python_lib
 
 
 class YolkException(Exception):
